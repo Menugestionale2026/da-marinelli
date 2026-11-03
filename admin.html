@@ -40,6 +40,7 @@
       <label class="check" id="login-remember" hidden style="margin-top:10px"><input type="checkbox" id="remember" checked> Resta collegato su questo dispositivo</label>
       <p class="form-error" id="login-err" role="alert" hidden></p>
       <button class="btn btn--primary btn--block" type="submit" style="margin-top:14px">Entra</button>
+      <p class="hint" id="login-forgot" hidden style="margin-top:12px">Password dimenticata? Non si può recuperare: chi ha configurato il sito deve riattivare l’accesso con un nuovo token.</p>
       <a class="back" href="index.html">Torna al menù</a>
     </form>
   </main>
@@ -402,6 +403,7 @@
       inp.setAttribute('inputmode', keyMode ? 'text' : 'numeric');
       inp.placeholder = keyMode ? 'Password' : '••••';
       $('#login-remember').hidden = !keyMode;
+      $('#login-forgot').hidden = !keyMode;
     }
     function showLogin() {
       $('#app-view').hidden = true;
