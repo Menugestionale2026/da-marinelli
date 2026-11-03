@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": 1793709648157,
+  "updatedAt": 1793711700970,
   "menu": {
     "items": [
       {
@@ -2233,10 +2233,10 @@
     "address": "Piazza della Repubblica 21, Monfalcone (GO)",
     "mapUrl": "",
     "hours": {
-      "it": "Lunedì: chiuso\nMartedì – domenica: 18:30 – 24:00",
-      "en": "Monday: closed\nTuesday – Sunday: 6:30 pm – midnight",
+      "it": "Lunedì: Chiuso\nMartedì – Domenica: 18:30 – 24:00",
+      "en": "Monday: Closed\nTuesday – Sunday: 6:30 pm – midnight",
       "de": "Montag: Ruhetag\nDienstag – Sonntag: 18:30 – 24:00 Uhr",
-      "sl": "Ponedeljek: zaprto\nTorek – nedelja: 18.30 – 24.00"
+      "sl": "Ponedeljek: Zaprto\nTorek – Nedelja: 18.30 – 24.00"
     },
     "coperto": 2.5,
     "maxGuests": 20
