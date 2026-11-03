@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": 1793724425157,
+  "updatedAt": 1793724554357,
   "menu": {
     "items": [
       {
@@ -976,7 +976,7 @@
         "prices": [
           {
             "label": null,
-            "value": 13
+            "value": 11
           }
         ],
         "from": false,
