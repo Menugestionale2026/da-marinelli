@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Da Marinelli — Area gestionale</title>
+  <meta name="theme-color" content="#25211f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<!--
+  AREA GESTIONALE — dati salvati in localStorage (solo in questo browser).
+  PIN predefinito: 1234  (cambialo subito da Impostazioni).
+  Il PIN è controllato nel browser: serve a tenere lontani i curiosi,
+  NON è una vera protezione. Per un uso reale serve un login lato server.
+-->
+<body data-page="admin">
+
+  <!-- ===================== ACCESSO ===================== -->
+  <main class="adm-login" id="login-view">
+    <form class="adm-login-card" id="login-form" novalidate>
+      <svg viewBox="0 0 32 32" width="44" height="44" aria-hidden="true">
+        <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M16 2v28M2 16h28M6.1 6.1l19.8 19.8M25.9 6.1L6.1 25.9" stroke="currentColor" stroke-width="1.2" opacity=".5"/>
+        <circle cx="16" cy="16" r="3.4" fill="currentColor"/>
+      </svg>
+      <h1>Area gestionale</h1>
+      <p>Inserisci il PIN per continuare.</p>
+      <div class="field">
+        <label class="visually-hidden" for="pin">PIN</label>
+        <input class="input" id="pin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="12" placeholder="••••" autofocus>
+      </div>
+      <p class="form-error" id="login-err" role="alert" hidden></p>
+      <button class="btn btn--primary btn--block" type="submit" style="margin-top:14px">Entra</button>
+      <a class="back" href="index.html">Torna al menù</a>
+    </form>
+  </main>
+
+  <!-- ===================== APP ===================== -->
+  <div id="app-view" hidden>
+    <header class="adm-top">
+      <div class="adm-brand">
+        <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
+          <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M16 2v28M2 16h28M6.1 6.1l19.8 19.8M25.9 6.1L6.1 25.9" stroke="currentColor" stroke-width="1.2" opacity=".5"/>
+          <circle cx="16" cy="16" r="3.4" fill="currentColor"/>
+        </svg>
+        <div><strong>Da Marinelli</strong><small>Area gestionale</small></div>
+      </div>
+      <div class="adm-top-actions">
+        <a class="btn btn--light btn--sm" href="index.html" target="_blank" rel="noopener">Vedi menù</a>
+        <button class="btn btn--light btn--sm" type="button" id="logout">Esci</button>
+      </div>
+    </header>
+
+    <div class="adm-notices" id="notices"></div>
+
+    <nav class="adm-tabs" role="tablist" aria-label="Sezioni">
+      <button class="adm-tab" role="tab" type="button" data-tab="bookings" aria-selected="true">Prenotazioni<span class="count" id="count-pending" hidden></span></button>
+      <button class="adm-tab" role="tab" type="button" data-tab="menu" aria-selected="false">Menù</button>
+      <button class="adm-tab" role="tab" type="button" data-tab="settings" aria-selected="false">Impostazioni</button>
+    </nav>
+
+    <main class="adm-main">
+
+      <!-- ---------- PRENOTAZIONI ---------- -->
+      <section id="tab-bookings" role="tabpanel">
+        <div class="stats">
+          <div class="stat"><b id="st-today">0</b><span>Oggi</span></div>
+          <div class="stat"><b id="st-pending">0</b><span>Da confermare</span></div>
+          <div class="stat"><b id="st-confirmed">0</b><span>Confermate (prossime)</span></div>
+        </div>
+
+        <div class="toolbar-row">
+          <div class="field">
+            <label for="bk-q">Cerca</label>
+            <input class="input" id="bk-q" type="search" placeholder="Nome, telefono, note">
+          </div>
+          <div class="field">
+            <label for="bk-status">Stato</label>
+            <select class="input" id="bk-status">
+              <option value="">Tutti</option>
+              <option value="pending">In attesa</option>
+              <option value="confirmed">Confermate</option>
+              <option value="declined">Rifiutate</option>
+              <option value="cancelled">Annullate</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="bk-period">Periodo</label>
+            <select class="input" id="bk-period">
+              <option value="upcoming">Da oggi in poi</option>
+              <option value="past">Passate</option>
+              <option value="all">Tutte</option>
+            </select>
+          </div>
+          <button class="btn btn--primary" type="button" id="bk-new">Nuova prenotazione</button>
+        </div>
+
+        <div id="bk-list"></div>
+      </section>
+
+      <!-- ---------- MENÙ ---------- -->
+      <section id="tab-menu" role="tabpanel" hidden>
+        <div class="toolbar-row">
+          <div class="field">
+            <label for="mi-q">Cerca piatto</label>
+            <input class="input" id="mi-q" type="search" placeholder="Nome o ingrediente">
+          </div>
+          <div class="field">
+            <label for="mi-cat">Categoria</label>
+            <select class="input" id="mi-cat"></select>
+          </div>
+          <button class="btn btn--primary" type="button" id="mi-new">Nuovo piatto</button>
+        </div>
+        <p class="hint">Usa l’interruttore per segnare un piatto come non disponibile: resta nel menù ma appare in grigio.</p>
+        <div id="mi-list"></div>
+      </section>
+
+      <!-- ---------- IMPOSTAZIONI ---------- -->
+      <section id="tab-settings" role="tabpanel" hidden>
+        <form class="card" id="set-form" novalidate>
+          <h3>Contatti e orari</h3>
+          <p>Compaiono nel menù pubblico, nella sezione contatti.</p>
+          <div class="form-grid">
+            <div class="field"><label for="s-phone">Telefono</label><input class="input" id="s-phone" type="tel" inputmode="tel"></div>
+            <div class="field"><label for="s-wa">Numero WhatsApp</label><input class="input" id="s-wa" type="tel" inputmode="tel" placeholder="+39 333 1234567"></div>
+            <div class="field"><label for="s-email">Email</label><input class="input" id="s-email" type="email"></div>
+            <div class="field"><label for="s-map">Link Google Maps (facoltativo)</label><input class="input" id="s-map" type="url" placeholder="https://maps.google.com/…"></div>
+            <div class="field span-2"><label for="s-address">Indirizzo</label><input class="input" id="s-address"></div>
+            <div class="field span-2"><label for="s-hours-it">Orari — italiano</label><textarea class="input" id="s-hours-it" rows="3"></textarea></div>
+            <div class="field span-2"><label for="s-hours-en">Orari — inglese</label><textarea class="input" id="s-hours-en" rows="3"></textarea></div>
+            <div class="field span-2"><label for="s-hours-de">Orari — tedesco</label><textarea class="input" id="s-hours-de" rows="3"></textarea></div>
+            <div class="field span-2"><label for="s-hours-sl">Orari — sloveno</label><textarea class="input" id="s-hours-sl" rows="3"></textarea></div>
+          </div>
+
+          <h3 style="margin-top:22px">Sala e prenotazioni</h3>
+          <div class="form-grid" style="margin-top:10px">
+            <div class="field"><label for="s-coperto">Coperto (€)</label><input class="input" id="s-coperto" inputmode="decimal"></div>
+            <div class="field"><label for="s-maxguests">Persone massime per richiesta online</label><input class="input" id="s-maxguests" type="number" min="1" max="99" inputmode="numeric"></div>
+            <label class="check span-2"><input type="checkbox" id="s-bookings"> Accetta richieste di prenotazione dal menù online</label>
+          </div>
+          <p class="form-error" id="set-err" role="alert" hidden></p>
+          <div class="card-actions"><button class="btn btn--primary" type="submit">Salva impostazioni</button></div>
+        </form>
+
+        <form class="card" id="pin-form" novalidate>
+          <h3>Cambia PIN</h3>
+          <p>Da 4 a 8 cifre.</p>
+          <div class="form-grid">
+            <div class="field span-2"><label for="pin-old">PIN attuale</label><input class="input" id="pin-old" type="password" inputmode="numeric" autocomplete="current-password"></div>
+            <div class="field"><label for="pin-new">Nuovo PIN</label><input class="input" id="pin-new" type="password" inputmode="numeric" autocomplete="new-password" maxlength="8"></div>
+            <div class="field"><label for="pin-new2">Ripeti il nuovo PIN</label><input class="input" id="pin-new2" type="password" inputmode="numeric" autocomplete="new-password" maxlength="8"></div>
+          </div>
+          <p class="form-error" id="pin-err" role="alert" hidden></p>
+          <div class="card-actions"><button class="btn btn--primary" type="submit">Aggiorna PIN</button></div>
+        </form>
+
+        <div class="card">
+          <h3>Copia di sicurezza</h3>
+          <p>Menù, prenotazioni e impostazioni vivono solo in questo browser. Scarica una copia ogni tanto: puoi ripristinarla qui o su un altro dispositivo.</p>
+          <div class="card-actions">
+            <button class="btn btn--outline" type="button" id="export">Scarica copia (JSON)</button>
+            <button class="btn btn--outline" type="button" id="import-btn">Ripristina da file</button>
+            <input type="file" id="import-file" accept="application/json,.json" hidden>
+            <button class="btn btn--danger" type="button" id="menu-reset">Ripristina menù originale</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===================== FINESTRE ===================== -->
+
+  <!-- Prenotazione -->
+  <dialog class="modal" id="booking-dialog" aria-labelledby="bf-title">
+    <div class="modal-head">
+      <h2 id="bf-title">Prenotazione</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Chiudi">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="booking-form" novalidate>
+        <div class="form-grid">
+          <div class="field span-2"><label for="bf-name">Nome e cognome</label><input class="input" id="bf-name" autocomplete="off"></div>
+          <div class="field span-2"><label for="bf-phone">Telefono</label><input class="input" id="bf-phone" type="tel" inputmode="tel" autocomplete="off"></div>
+          <div class="field"><label for="bf-date">Data</label><input class="input" id="bf-date" type="date"></div>
+          <div class="field"><label for="bf-time">Orario</label><input class="input" id="bf-time" type="time"></div>
+          <div class="field"><label for="bf-guests">Persone</label><input class="input" id="bf-guests" type="number" min="1" max="99" inputmode="numeric"></div>
+          <div class="field">
+            <label for="bf-status">Stato</label>
+            <select class="input" id="bf-status">
+              <option value="pending">In attesa</option>
+              <option value="confirmed">Confermata</option>
+              <option value="declined">Rifiutata</option>
+              <option value="cancelled">Annullata</option>
+            </select>
+          </div>
+          <div class="field span-2"><label for="bf-notes">Note</label><textarea class="input" id="bf-notes" rows="3"></textarea></div>
+        </div>
+        <p class="form-error" id="bf-err" role="alert" hidden></p>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn--outline" data-close>Annulla</button>
+      <button type="submit" class="btn btn--primary" form="booking-form">Salva</button>
+    </div>
+  </dialog>
+
+  <!-- Piatto -->
+  <dialog class="modal" id="item-dialog" aria-labelledby="f-title">
+    <div class="modal-head">
+      <h2 id="f-title">Piatto</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Chiudi">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="item-form" novalidate>
+        <div class="field">
+          <label for="f-cat">Categoria</label>
+          <select class="input" id="f-cat"></select>
+        </div>
+
+        <div class="field">
+          <span class="label">Testi nelle quattro lingue</span>
+          <div class="lang-tabs" role="tablist" aria-label="Lingua dei testi">
+            <button type="button" class="ltab" role="tab" data-ltab="it" aria-selected="true">IT</button>
+            <button type="button" class="ltab" role="tab" data-ltab="en" aria-selected="false">EN</button>
+            <button type="button" class="ltab" role="tab" data-ltab="de" aria-selected="false">DE</button>
+            <button type="button" class="ltab" role="tab" data-ltab="sl" aria-selected="false">SL</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-name">Nome del piatto</label>
+          <input class="input" id="f-name" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="f-desc">Ingredienti / descrizione</label>
+          <textarea class="input" id="f-desc" rows="4"></textarea>
+          <p class="hint">Se lasci vuoto EN, DE o SL, il menù mostra il testo italiano.</p>
+        </div>
+
+        <div class="field">
+          <span class="label">Prezzo</span>
+          <div class="price-rows" id="f-prices"></div>
+          <div><button type="button" class="btn btn--outline btn--sm" id="f-add-price">Aggiungi un altro prezzo</button></div>
+          <p class="hint">Un solo prezzo: lascia vuota l’etichetta. Più prezzi (es. calice, mezzo litro): scrivi un’etichetta per ognuno. Senza prezzo il menù mostra «su richiesta».</p>
+          <label class="check"><input type="checkbox" id="f-from"> Mostra «da» davanti al prezzo (a partire da)</label>
+        </div>
+
+        <div class="field">
+          <span class="label">Allergeni presenti</span>
+          <div class="alg-grid" id="f-algs"></div>
+        </div>
+
+        <label class="check"><input type="checkbox" id="f-frozen"> Può essere congelato o surgelato all’origine (mostra l’asterisco *)</label>
+        <label class="check"><input type="checkbox" id="f-avail"> Disponibile</label>
+
+        <p class="form-error" id="f-err" role="alert" hidden></p>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn--danger" id="f-delete">Elimina</button>
+      <span class="spacer"></span>
+      <button type="button" class="btn btn--outline" data-close>Annulla</button>
+      <button type="submit" class="btn btn--primary" form="item-form">Salva</button>
+    </div>
+  </dialog>
+
+  <!-- Conferma -->
+  <dialog class="confirm" id="confirm-dialog" aria-labelledby="confirm-msg">
+    <p id="confirm-msg"></p>
+    <form method="dialog">
+      <button class="btn btn--outline btn--sm" value="cancel">Annulla</button>
+      <button class="btn btn--primary btn--sm" id="confirm-ok" value="ok">Conferma</button>
+    </form>
+  </dialog>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+  <script>
+  /* =====================================================================
+     LOGICA DELL'AREA GESTIONALE
+     Usa window.MarinelliCore (definito in script.js) per leggere e
+     scrivere menù, prenotazioni e impostazioni in localStorage.
+     ===================================================================== */
+  (function () {
+    'use strict';
+    const C = window.MarinelliCore;
+    const $ = (s, r) => (r || document).querySelector(s);
+    const $$ = (s, r) => Array.prototype.slice.call((r || document).querySelectorAll(s));
+    const esc = C.esc;
+    const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const AUTH_KEY = 'marinelli.auth';
+    const TAB_KEY = 'marinelli.tab';
+
+    /* ---------- utilità interfaccia ---------- */
+    function openDialog(d) {
+      if (typeof d.showModal === 'function') { if (!d.open) d.showModal(); }
+      else d.setAttribute('open', '');
+    }
+    function closeDialog(d) {
+      if (typeof d.close === 'function') d.close();
+      else d.removeAttribute('open');
+    }
+    function toast(msg, isErr) {
+      const n = document.createElement('div');
+      n.className = 'toast' + (isErr ? ' toast--err' : '');
+      n.textContent = msg;
+      $('#toasts').appendChild(n);
+      setTimeout(() => n.remove(), 3200);
+    }
+    function showErr(sel, msg) {
+      const e = $(sel);
+      e.textContent = msg;
+      e.hidden = false;
+      return false;
+    }
+    function confirmBox(message, okLabel, danger) {
+      const d = $('#confirm-dialog');
+      if (typeof d.showModal !== 'function') return Promise.resolve(window.confirm(message));
+      return new Promise((resolve) => {
+        $('#confirm-msg').textContent = message;
+        const ok = $('#confirm-ok');
+        ok.textContent = okLabel || 'Conferma';
+        ok.classList.toggle('btn--danger', !!danger);
+        ok.classList.toggle('btn--primary', !danger);
+        d.returnValue = '';
+        const onClose = () => { d.removeEventListener('close', onClose); resolve(d.returnValue === 'ok'); };
+        d.addEventListener('close', onClose);
+        d.showModal();
+      });
+    }
+    function download(filename, text) {
+      const blob = new Blob([text], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+    }
+
+    document.addEventListener('click', (e) => {
+      const c = e.target.closest('[data-close]');
+      if (c) closeDialog(c.closest('dialog'));
+    });
+
+    /* =================================================================
+       ACCESSO CON PIN
+       ================================================================= */
+    const isAuthed = () => { try { return sessionStorage.getItem(AUTH_KEY) === '1'; } catch (e) { return false; } };
+    let fails = 0, lockUntil = 0;
+
+    $('#login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const now = Date.now();
+      if (now < lockUntil) return showErr('#login-err', 'Troppi tentativi. Riprova tra ' + Math.ceil((lockUntil - now) / 1000) + ' secondi.');
+      if (C.checkPin($('#pin').value)) {
+        try { sessionStorage.setItem(AUTH_KEY, '1'); } catch (err) { /* ignora */ }
+        fails = 0;
+        $('#login-err').hidden = true;
+        showApp();
+      } else {
+        fails++;
+        if (fails >= 5) { lockUntil = now + 30000; fails = 0; showErr('#login-err', 'Troppi tentativi. Riprova tra 30 secondi.'); }
+        else showErr('#login-err', 'PIN errato.');
+        $('#pin').value = '';
+        $('#pin').focus();
+      }
+    });
+
+    $('#logout').addEventListener('click', () => {
+      try { sessionStorage.removeItem(AUTH_KEY); } catch (e) { /* ignora */ }
+      $('#app-view').hidden = true;
+      $('#login-view').hidden = false;
+      $('#pin').value = '';
+      $('#pin').focus();
+    });
+
+    function showApp() {
+      $('#login-view').hidden = true;
+      $('#app-view').hidden = false;
+      renderNotices();
+      renderBookings();
+      renderMenuList();
+      let tab = 'bookings';
+      try { tab = sessionStorage.getItem(TAB_KEY) || 'bookings'; } catch (e) { /* ignora */ }
+      selectTab(tab);
+    }
+
+    /* =================================================================
+       SCHEDE E AVVISI
+       ================================================================= */
+    function selectTab(name) {
+      ['bookings', 'menu', 'settings'].forEach((n) => {
+        $('#tab-' + n).hidden = n !== name;
+        $('.adm-tab[data-tab="' + n + '"]').setAttribute('aria-selected', String(n === name));
+      });
+      try { sessionStorage.setItem(TAB_KEY, name); } catch (e) { /* ignora */ }
+      if (name === 'settings') fillSettings();
+    }
+    $$('.adm-tab').forEach((b) => b.addEventListener('click', () => selectTab(b.getAttribute('data-tab'))));
+
+    function renderNotices() {
+      const s = C.getSettings();
+      const out = [];
+      if (C.isDefaultPin()) {
+        out.push('<div class="notice notice--warn"><span>Stai usando il PIN predefinito (1234). Cambialo ora.</span><button class="btn btn--sm btn--outline" type="button" data-goto="settings">Cambia PIN</button></div>');
+      }
+      if (s.phone === C.DEFAULT_SETTINGS.phone || s.address === C.DEFAULT_SETTINGS.address) {
+        out.push('<div class="notice notice--warn"><span>Telefono, indirizzo e orari sono ancora segnaposto: completali prima di pubblicare.</span><button class="btn btn--sm btn--outline" type="button" data-goto="settings">Completa</button></div>');
+      }
+      out.push('<div class="notice notice--info"><span>I dati sono salvati solo in questo browser. Le modifiche non arrivano ai telefoni dei clienti finché il sito non usa un database online.</span></div>');
+      $('#notices').innerHTML = out.join('');
+    }
+    $('#notices').addEventListener('click', (e) => {
+      const g = e.target.closest('[data-goto]');
+      if (g) selectTab(g.getAttribute('data-goto'));
+    });
+
+    /* =================================================================
+       PRENOTAZIONI
+       ================================================================= */
+    const STATUS = { pending: 'In attesa', confirmed: 'Confermata', declined: 'Rifiutata', cancelled: 'Annullata' };
+    const WA_TXT = {
+      it: {
+        confirmed: 'Ciao {name}, la tua prenotazione da Marinelli per {guests} persone, {date} alle {time}, è confermata. A presto!',
+        declined: 'Ciao {name}, purtroppo non riusciamo a confermare la prenotazione per {date} alle {time}. Se vuoi, proponici un altro orario.',
+        pending: 'Ciao {name}, abbiamo ricevuto la tua richiesta di prenotazione per {guests} persone, {date} alle {time}. Ti confermiamo a breve.'
+      },
+      en: {
+        confirmed: 'Hi {name}, your booking at Da Marinelli for {guests} people, {date} at {time}, is confirmed. See you soon!',
+        declined: 'Hi {name}, unfortunately we cannot confirm your booking for {date} at {time}. Feel free to suggest another time.',
+        pending: 'Hi {name}, we have received your booking request for {guests} people, {date} at {time}. We will confirm shortly.'
+      },
+      de: {
+        confirmed: 'Hallo {name}, Ihre Reservierung bei Da Marinelli für {guests} Personen am {date} um {time} ist bestätigt. Bis bald!',
+        declined: 'Hallo {name}, leider können wir Ihre Reservierung am {date} um {time} nicht bestätigen. Gern können Sie uns eine andere Zeit vorschlagen.',
+        pending: 'Hallo {name}, wir haben Ihre Reservierungsanfrage für {guests} Personen am {date} um {time} erhalten. Wir bestätigen in Kürze.'
+      },
+      sl: {
+        confirmed: 'Pozdravljeni, {name}, vaša rezervacija v Da Marinelli (število oseb: {guests}) za {date} ob {time} je potrjena. Se vidimo!',
+        declined: 'Pozdravljeni, {name}, žal rezervacije za {date} ob {time} ne moremo potrditi. Predlagajte nam drug termin.',
+        pending: 'Pozdravljeni, {name}, vašo zahtevo za rezervacijo (število oseb: {guests}) za {date} ob {time} smo prejeli. Kmalu se vam oglasimo s potrditvijo.'
+      }
+    };
+
+    function dateParts(iso, locale) {
+      const d = new Date(iso + 'T00:00:00');
+      return {
+        short: d.toLocaleDateString(locale, { day: 'numeric', month: 'short' }),
+        weekday: d.toLocaleDateString(locale, { weekday: 'long' }),
+        long: d.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long' })
+      };
+    }
+
+    function waLink(b) {
+      const lang = C.LANGS.indexOf(b.lang) >= 0 ? b.lang : 'it';
+      const kind = b.status === 'confirmed' ? 'confirmed' : (b.status === 'pending' ? 'pending' : 'declined');
+      const msg = C.fmt(WA_TXT[lang][kind], { name: b.name, guests: b.guests, date: dateParts(b.date, C.LOCALES[lang]).long, time: b.time });
+      return 'https://wa.me/' + C.waNumber(b.phone) + '?text=' + encodeURIComponent(msg);
+    }
+
+    function filteredBookings() {
+      const today = C.todayISO();
+      const q = norm($('#bk-q').value);
+      const st = $('#bk-status').value;
+      const per = $('#bk-period').value;
+      const list = C.getBookings().filter((b) => {
+        if (st && b.status !== st) return false;
+        if (per === 'upcoming' && b.date < today) return false;
+        if (per === 'past' && b.date >= today) return false;
+        if (q && norm(b.name + ' ' + b.phone + ' ' + (b.notes || '')).indexOf(q) < 0) return false;
+        return true;
+      });
+      list.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+      if (per === 'past') list.reverse();
+      return list;
+    }
+
+    function bookingHtml(b) {
+      const p = dateParts(b.date, 'it-IT');
+      const actions = [];
+      if (b.status === 'pending') {
+        actions.push('<button class="btn btn--primary btn--sm" data-act="confirm">Accetta</button>');
+        actions.push('<button class="btn btn--outline btn--sm" data-act="decline">Rifiuta</button>');
+      } else if (b.status === 'confirmed') {
+        actions.push('<button class="btn btn--outline btn--sm" data-act="cancel">Annulla</button>');
+      } else {
+        actions.push('<button class="btn btn--outline btn--sm" data-act="confirm">Riconferma</button>');
+      }
+      actions.push('<button class="btn btn--outline btn--sm" data-act="edit">Modifica</button>');
+      actions.push('<a class="btn btn--outline btn--sm" href="' + esc(waLink(b)) + '" target="_blank" rel="noopener">WhatsApp</a>');
+      actions.push('<button class="btn btn--danger btn--sm" data-act="delete">Elimina</button>');
+      return '<article class="bk bk--' + esc(b.status) + '" data-id="' + esc(b.id) + '">' +
+        '<div class="bk-when"><strong>' + esc(b.time) + '</strong><span>' + esc(p.weekday) + '<br>' + esc(p.short) + '</span></div>' +
+        '<div class="bk-main"><h3>' + esc(b.name) + ' <span class="badge badge--' + esc(b.status) + '">' + esc(STATUS[b.status] || b.status) + '</span></h3>' +
+        '<p>' + esc(b.guests) + ' persone · <a href="tel:' + esc(String(b.phone).replace(/[^\d+]/g, '')) + '">' + esc(b.phone) + '</a> · ' + (b.source === 'online' ? 'dal sito' : 'inserita a mano') + '</p>' +
+        (b.notes ? '<p class="bk-notes">' + esc(b.notes) + '</p>' : '') + '</div>' +
+        '<div class="bk-actions">' + actions.join('') + '</div></article>';
+    }
+
+    function renderBookings() {
+      const all = C.getBookings();
+      const today = C.todayISO();
+      $('#st-today').textContent = all.filter((b) => b.date === today && (b.status === 'pending' || b.status === 'confirmed')).length;
+      const pending = all.filter((b) => b.status === 'pending').length;
+      $('#st-pending').textContent = pending;
+      $('#st-confirmed').textContent = all.filter((b) => b.status === 'confirmed' && b.date >= today).length;
+      const badge = $('#count-pending');
+      badge.textContent = pending;
+      badge.hidden = !pending;
+
+      const list = filteredBookings();
+      $('#bk-list').innerHTML = list.length
+        ? list.map(bookingHtml).join('')
+        : '<p class="empty-state">' + (all.length ? 'Nessuna prenotazione con questi filtri.' : 'Ancora nessuna prenotazione. Le richieste dal menù arrivano qui; puoi anche aggiungerne una a mano.') + '</p>';
+    }
+
+    ['#bk-q', '#bk-status', '#bk-period'].forEach((s) => $(s).addEventListener('input', renderBookings));
+
+    function setStatus(id, status, msg) {
+      const list = C.getBookings();
+      const b = list.find((x) => x.id === id);
+      if (!b) return;
+      b.status = status;
+      C.saveBookings(list);
+      renderBookings();
+      toast(msg);
+    }
+
+    $('#bk-list').addEventListener('click', async (e) => {
+      const btn = e.target.closest('[data-act]');
+      if (!btn) return;
+      const id = btn.closest('[data-id]').getAttribute('data-id');
+      const act = btn.getAttribute('data-act');
+      if (act === 'confirm') setStatus(id, 'confirmed', 'Prenotazione confermata');
+      else if (act === 'decline') setStatus(id, 'declined', 'Prenotazione rifiutata');
+      else if (act === 'cancel') setStatus(id, 'cancelled', 'Prenotazione annullata');
+      else if (act === 'edit') openBookingDialog(id);
+      else if (act === 'delete') {
+        if (await confirmBox('Eliminare definitivamente questa prenotazione?', 'Elimina', true)) {
+          C.saveBookings(C.getBookings().filter((x) => x.id !== id));
+          renderBookings();
+          toast('Prenotazione eliminata');
+        }
+      }
+    });
+
+    /* ---------- finestra prenotazione (nuova / modifica) ---------- */
+    let editingBooking = null;
+    function openBookingDialog(id) {
+      const b = id ? C.getBookings().find((x) => x.id === id) : null;
+      editingBooking = b ? b.id : null;
+      $('#bf-title').textContent = b ? 'Modifica prenotazione' : 'Nuova prenotazione';
+      $('#bf-name').value = b ? b.name : '';
+      $('#bf-phone').value = b ? b.phone : '';
+      $('#bf-date').value = b ? b.date : C.todayISO();
+      $('#bf-time').value = b ? b.time : '20:00';
+      $('#bf-guests').value = b ? b.guests : 2;
+      $('#bf-status').value = b ? b.status : 'confirmed';
+      $('#bf-notes').value = b ? (b.notes || '') : '';
+      $('#bf-err').hidden = true;
+      openDialog($('#booking-dialog'));
+    }
+    $('#bk-new').addEventListener('click', () => openBookingDialog(null));
+
+    $('#booking-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = $('#bf-name').value.trim();
+      const phone = $('#bf-phone').value.trim();
+      const date = $('#bf-date').value;
+      const time = $('#bf-time').value;
+      const guests = parseInt($('#bf-guests').value, 10);
+      if (!name) return showErr('#bf-err', 'Inserisci il nome.');
+      if (!phone) return showErr('#bf-err', 'Inserisci un numero di telefono.');
+      if (!date || !time) return showErr('#bf-err', 'Scegli data e orario.');
+      if (!guests || guests < 1) return showErr('#bf-err', 'Indica il numero di persone.');
+
+      const list = C.getBookings();
+      const data = { name: name, phone: phone, date: date, time: time, guests: guests, notes: $('#bf-notes').value.trim(), status: $('#bf-status').value };
+      if (editingBooking) {
+        const b = list.find((x) => x.id === editingBooking);
+        if (b) Object.assign(b, data);
+      } else {
+        list.push(Object.assign({ id: C.uid(), source: 'manual', lang: 'it', createdAt: Date.now() }, data));
+      }
+      C.saveBookings(list);
+      closeDialog($('#booking-dialog'));
+      renderBookings();
+      toast('Prenotazione salvata');
+    });
+
+    /* =================================================================
+       MENÙ: ELENCO
+       ================================================================= */
+    function fillCategorySelect(sel, withAll) {
+      let html = withAll ? '<option value="">Tutte le categorie</option>' : '';
+      html += C.CAT_ORDER.map((cid) => '<option value="' + cid + '">' + esc(C.tr(C.CATEGORIES[cid].name, 'it')) + '</option>').join('');
+      sel.innerHTML = html;
+    }
+
+    function priceSummary(i) {
+      if (!i.prices.length) return 'Prezzo non inserito';
+      return i.prices.map((p) => (i.from ? 'da ' : '') + (p.label && p.label.it ? p.label.it + ' ' : '') + C.formatPrice(p.value, 'it')).join(' · ');
+    }
+    function isComplete(i, l) {
+      if (i.desc.it && !i.desc[l]) return false;
+      return i.prices.every((p) => !(p.label && p.label.it) || p.label[l]);
+    }
+
+    function itemHtml(i) {
+      const tags = ['en', 'de', 'sl'].map((l) =>
+        isComplete(i, l) ? '<span class="tag tag--ok">' + l.toUpperCase() + '</span>' : '<span class="tag tag--warn">' + l.toUpperCase() + ' da tradurre</span>'
+      ).join('');
+      return '<li class="mi' + (i.available ? '' : ' is-off') + '" data-id="' + esc(i.id) + '">' +
+        '<div><span class="mi-name">' + esc(i.name.it) + (i.frozen ? '*' : '') + '</span>' +
+        '<span class="mi-sub">' + esc(priceSummary(i)) + (i.allergens.length ? ' · allergeni ' + i.allergens.join(',') : '') + '</span>' +
+        '<span class="mi-tags">' + tags + '</span></div>' +
+        '<div class="mi-actions">' +
+        '<label class="switch"><input type="checkbox" data-act="avail"' + (i.available ? ' checked' : '') + '><i></i><span>Disponibile</span></label>' +
+        '<button class="btn btn--outline btn--sm" type="button" data-act="edit">Modifica</button>' +
+        '</div></li>';
+    }
+
+    function renderMenuList() {
+      const items = C.getMenu();
+      const q = norm($('#mi-q').value);
+      const only = $('#mi-cat').value;
+      let html = '';
+      C.CAT_ORDER.forEach((cid) => {
+        if (only && only !== cid) return;
+        const list = items.filter((i) => i.cat === cid && (!q || norm(i.name.it + ' ' + i.name.en + ' ' + i.desc.it).indexOf(q) >= 0));
+        if (!list.length && q) return;
+        html += '<div class="mi-group"><h3><span>' + esc(C.tr(C.CATEGORIES[cid].name, 'it')) + ' (' + list.length + ')</span>' +
+          '<button class="btn btn--outline btn--sm" type="button" data-newcat="' + cid + '">Aggiungi</button></h3>' +
+          (list.length ? '<ul class="mi-list">' + list.map(itemHtml).join('') + '</ul>' : '<p class="empty-state">Nessun piatto in questa categoria.</p>') + '</div>';
+      });
+      $('#mi-list').innerHTML = html || '<p class="empty-state">Nessun piatto trovato.</p>';
+    }
+
+    ['#mi-q', '#mi-cat'].forEach((s) => $(s).addEventListener('input', renderMenuList));
+    $('#mi-new').addEventListener('click', () => openItemDialog(null, $('#mi-cat').value || null));
+
+    $('#mi-list').addEventListener('click', (e) => {
+      const nc = e.target.closest('[data-newcat]');
+      if (nc) return openItemDialog(null, nc.getAttribute('data-newcat'));
+      const btn = e.target.closest('[data-act="edit"]');
+      if (btn) openItemDialog(btn.closest('[data-id]').getAttribute('data-id'));
+    });
+    $('#mi-list').addEventListener('change', (e) => {
+      const sw = e.target.closest('[data-act="avail"]');
+      if (!sw) return;
+      const id = sw.closest('[data-id]').getAttribute('data-id');
+      const items = C.getMenu();
+      const it = items.find((x) => x.id === id);
+      if (!it) return;
+      it.available = sw.checked;
+      C.saveMenu(items);
+      renderMenuList();
+      toast(it.available ? 'Piatto di nuovo disponibile' : 'Piatto segnato come non disponibile');
+    });
+
+    /* =================================================================
+       MENÙ: FINESTRA PIATTO (aggiungi / modifica / elimina)
+       ================================================================= */
+    const blank = () => ({ it: '', en: '', de: '', sl: '' });
+    let draft = null;
+    let dlang = 'it';
+
+    function renderPriceRows() {
+      $('#f-prices').innerHTML = draft.prices.map((p, i) =>
+        '<div class="price-row" data-i="' + i + '">' +
+        '<input class="input" data-k="label" aria-label="Etichetta del prezzo" placeholder="' + (dlang === 'it' ? 'Etichetta (facoltativa), es. Calice' : 'Etichetta ' + dlang.toUpperCase()) + '" value="' + esc(p.label[dlang]) + '">' +
+        '<input class="input" data-k="value" inputmode="decimal" aria-label="Prezzo in euro" placeholder="0,00" value="' + esc(p.value) + '">' +
+        '<button type="button" class="icon-btn" data-k="rm" aria-label="Rimuovi questo prezzo">&times;</button></div>'
+      ).join('');
+    }
+
+    function renderItemLang() {
+      $$('.ltab').forEach((b) => b.setAttribute('aria-selected', String(b.getAttribute('data-ltab') === dlang)));
+      $('#f-name').value = draft.name[dlang];
+      $('#f-desc').value = draft.desc[dlang];
+      $('#f-name').placeholder = dlang === 'it' ? 'Es. Margherita' : (draft.name.it || 'Se vuoto, usa il nome italiano');
+      $('#f-desc').placeholder = dlang === 'it' ? 'Facoltativa' : (draft.desc.it ? 'Traduci: ' + draft.desc.it : 'Facoltativa');
+      renderPriceRows();
+    }
+
+    function openItemDialog(id, presetCat) {
+      const src = id ? C.getMenu().find((x) => x.id === id) : null;
+      draft = src ? C.clone(src) : { id: null, cat: presetCat || 'classiche', name: blank(), desc: blank(), prices: [], from: false, allergens: [], frozen: false, available: true };
+      draft.prices = draft.prices.map((p) => ({
+        label: Object.assign(blank(), p.label || {}),
+        value: Number(p.value).toFixed(2).replace('.', ',')
+      }));
+      if (!draft.prices.length) draft.prices.push({ label: blank(), value: '' });
+      dlang = 'it';
+      $('#f-title').textContent = src ? 'Modifica piatto' : 'Nuovo piatto';
+      $('#f-cat').value = draft.cat;
+      $('#f-from').checked = draft.from;
+      $('#f-frozen').checked = draft.frozen;
+      $('#f-avail').checked = draft.available;
+      $$('#f-algs input').forEach((c) => { c.checked = draft.allergens.indexOf(Number(c.value)) >= 0; });
+      $('#f-delete').hidden = !src;
+      $('#f-err').hidden = true;
+      renderItemLang();
+      openDialog($('#item-dialog'));
+    }
+
+    // costruzione una tantum della griglia allergeni e dei selettori categoria
+    $('#f-algs').innerHTML = C.ALLERGENS.map((a) =>
+      '<label class="check"><input type="checkbox" value="' + a.n + '"> ' + a.n + ' — ' + esc(C.tr(a.short, 'it')) + '</label>'
+    ).join('');
+    fillCategorySelect($('#f-cat'), false);
+    fillCategorySelect($('#mi-cat'), true);
+
+    $$('.ltab').forEach((b) => b.addEventListener('click', () => { dlang = b.getAttribute('data-ltab'); renderItemLang(); }));
+    $('#f-name').addEventListener('input', (e) => { draft.name[dlang] = e.target.value; });
+    $('#f-desc').addEventListener('input', (e) => { draft.desc[dlang] = e.target.value; });
+
+    $('#f-prices').addEventListener('input', (e) => {
+      const row = e.target.closest('.price-row');
+      const k = e.target.getAttribute('data-k');
+      if (!row || !k) return;
+      const p = draft.prices[Number(row.getAttribute('data-i'))];
+      if (k === 'label') p.label[dlang] = e.target.value;
+      if (k === 'value') p.value = e.target.value;
+    });
+    $('#f-prices').addEventListener('click', (e) => {
+      const rm = e.target.closest('[data-k="rm"]');
+      if (!rm) return;
+      draft.prices.splice(Number(rm.closest('.price-row').getAttribute('data-i')), 1);
+      if (!draft.prices.length) draft.prices.push({ label: blank(), value: '' });
+      renderPriceRows();
+    });
+    $('#f-add-price').addEventListener('click', () => {
+      draft.prices.push({ label: blank(), value: '' });
+      renderPriceRows();
+      const inputs = $$('#f-prices .price-row:last-child input');
+      if (inputs[0]) inputs[0].focus();
+    });
+
+    $('#item-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fail = (m) => showErr('#f-err', m);
+      draft.name[dlang] = $('#f-name').value;
+      draft.desc[dlang] = $('#f-desc').value;
+      const trim = (o) => ({ it: o.it.trim(), en: o.en.trim(), de: o.de.trim(), sl: o.sl.trim() });
+      const name = trim(draft.name);
+      if (!name.it) { dlang = 'it'; renderItemLang(); return fail('Inserisci il nome del piatto in italiano.'); }
+
+      const prices = [];
+      for (const r of draft.prices) {
+        if (!String(r.value).trim()) continue;
+        const v = parseFloat(String(r.value).replace(',', '.'));
+        if (!isFinite(v) || v < 0) return fail('Prezzo non valido: usa solo numeri, per esempio 12,50.');
+        const lab = trim(r.label);
+        prices.push({ label: lab.it || lab.en || lab.de || lab.sl ? lab : null, value: Math.round(v * 100) / 100 });
+      }
+      if (prices.length > 1 && prices.some((p) => !p.label || !p.label.it)) {
+        dlang = 'it'; renderItemLang();
+        return fail('Con più prezzi serve un’etichetta italiana per ognuno (per esempio «Calice», «Mezzo litro»).');
+      }
+
+      const item = {
+        id: draft.id || C.uid(),
+        cat: $('#f-cat').value,
+        name: name,
+        desc: trim(draft.desc),
+        prices: prices,
+        from: $('#f-from').checked,
+        allergens: $$('#f-algs input').filter((c) => c.checked).map((c) => Number(c.value)),
+        frozen: $('#f-frozen').checked,
+        available: $('#f-avail').checked
+      };
+      const items = C.getMenu();
+      const idx = items.findIndex((x) => x.id === item.id);
+      if (idx >= 0) items[idx] = item; else items.push(item);
+      C.saveMenu(items);
+      closeDialog($('#item-dialog'));
+      renderMenuList();
+      toast('Piatto salvato');
+    });
+
+    $('#f-delete').addEventListener('click', async () => {
+      if (!draft || !draft.id) return;
+      if (await confirmBox('Eliminare «' + (draft.name.it || 'questo piatto') + '» dal menù?', 'Elimina', true)) {
+        C.saveMenu(C.getMenu().filter((x) => x.id !== draft.id));
+        closeDialog($('#item-dialog'));
+        renderMenuList();
+        toast('Piatto eliminato');
+      }
+    });
+
+    /* =================================================================
+       IMPOSTAZIONI, PIN, COPIE DI SICUREZZA
+       ================================================================= */
+    function fillSettings() {
+      const s = C.getSettings();
+      $('#s-phone').value = s.phone;
+      $('#s-wa').value = s.whatsapp;
+      $('#s-email').value = s.email;
+      $('#s-map').value = s.mapUrl;
+      $('#s-address').value = s.address;
+      $('#s-hours-it').value = s.hours.it;
+      $('#s-hours-en').value = s.hours.en;
+      $('#s-hours-de').value = s.hours.de;
+      $('#s-hours-sl').value = s.hours.sl;
+      $('#s-coperto').value = String(s.coperto).replace('.', ',');
+      $('#s-maxguests').value = s.maxGuests;
+      $('#s-bookings').checked = s.bookingsEnabled !== false;
+      $('#set-err').hidden = true;
+      $('#pin-err').hidden = true;
+    }
+
+    $('#set-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const cop = parseFloat($('#s-coperto').value.replace(',', '.'));
+      if (!isFinite(cop) || cop < 0) return showErr('#set-err', 'Il coperto deve essere un numero, per esempio 2,50.');
+      const max = parseInt($('#s-maxguests').value, 10);
+      if (!max || max < 1) return showErr('#set-err', 'Indica il numero massimo di persone.');
+      const s = C.getSettings();
+      Object.assign(s, {
+        phone: $('#s-phone').value.trim(),
+        whatsapp: $('#s-wa').value.trim(),
+        email: $('#s-email').value.trim(),
+        mapUrl: $('#s-map').value.trim(),
+        address: $('#s-address').value.trim(),
+        hours: { it: $('#s-hours-it').value.trim(), en: $('#s-hours-en').value.trim(), de: $('#s-hours-de').value.trim(), sl: $('#s-hours-sl').value.trim() },
+        coperto: cop,
+        maxGuests: max,
+        bookingsEnabled: $('#s-bookings').checked
+      });
+      C.saveSettings(s);
+      $('#set-err').hidden = true;
+      renderNotices();
+      toast('Impostazioni salvate');
+    });
+
+    $('#pin-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const old = $('#pin-old').value, n1 = $('#pin-new').value, n2 = $('#pin-new2').value;
+      if (!C.checkPin(old)) return showErr('#pin-err', 'Il PIN attuale non è corretto.');
+      if (!/^\d{4,8}$/.test(n1)) return showErr('#pin-err', 'Il nuovo PIN deve avere da 4 a 8 cifre.');
+      if (n1 !== n2) return showErr('#pin-err', 'I due PIN non coincidono.');
+      C.setPin(n1);
+      $('#pin-form').reset();
+      $('#pin-err').hidden = true;
+      renderNotices();
+      toast('PIN aggiornato');
+    });
+
+    $('#export').addEventListener('click', () => {
+      const s = C.getSettings();
+      delete s.pinHash; // il PIN non viaggia nelle copie
+      const data = { app: 'da-marinelli', version: 1, exportedAt: new Date().toISOString(), menu: C.getMenu(), bookings: C.getBookings(), settings: s };
+      download('marinelli-backup-' + C.todayISO() + '.json', JSON.stringify(data, null, 2));
+      toast('Copia scaricata');
+    });
+
+    $('#import-btn').addEventListener('click', () => $('#import-file').click());
+    $('#import-file').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      e.target.value = '';
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async () => {
+        let data;
+        try { data = JSON.parse(reader.result); } catch (err) { return toast('File non valido.', true); }
+        if (!data || data.app !== 'da-marinelli' || !Array.isArray(data.menu) || !Array.isArray(data.bookings)) return toast('Questo file non è una copia di Da Marinelli.', true);
+        if (!(await confirmBox('Sostituire menù, prenotazioni e impostazioni attuali con quelli del file?', 'Ripristina', true))) return;
+        C.saveMenu(data.menu);
+        C.saveBookings(data.bookings);
+        if (data.settings) {
+          const keepHash = C.getSettings().pinHash;
+          const s = Object.assign({}, C.getSettings(), data.settings, { pinHash: keepHash });
+          C.saveSettings(s);
+        }
+        showApp();
+        toast('Copia ripristinata');
+      };
+      reader.readAsText(file);
+    });
+
+    $('#menu-reset').addEventListener('click', async () => {
+      if (await confirmBox('Ripristinare il menù originale? Perderai le modifiche ai piatti (le prenotazioni restano).', 'Ripristina', true)) {
+        C.resetMenu();
+        renderMenuList();
+        toast('Menù originale ripristinato');
+      }
+    });
+
+    /* ---------- aggiornamento automatico se arriva una prenotazione da un'altra scheda ---------- */
+    window.addEventListener('storage', (e) => {
+      if (!isAuthed()) return;
+      if (e.key === C.KEYS.bookings) {
+        const before = (function () { try { return JSON.parse(e.oldValue || '[]').length; } catch (err) { return 0; } })();
+        renderBookings();
+        const after = C.getBookings().length;
+        if (after > before) toast('Nuova richiesta di prenotazione');
+      }
+      if (e.key === C.KEYS.menu) renderMenuList();
+    });
+
+    /* ---------- avvio ---------- */
+    if (isAuthed()) showApp();
+    else $('#pin').focus();
+  })();
+  </script>
+</body>
+</html>

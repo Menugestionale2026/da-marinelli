@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Da Marinelli — Menù</title>
+  <meta name="description" content="Menù digitale di Da Marinelli: pizze, pizze fritte, primi, secondi, bevande e dolci. Italiano, English, Deutsch, Slovenščina.">
+  <meta name="theme-color" content="#25211f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<!-- data-page="menu" attiva la logica del menù pubblico in script.js -->
+<body data-page="menu">
+  <a class="skip" href="#menu">Vai al menù</a>
+
+  <!-- ===== Barra superiore: logo, lingua, prenotazione ===== -->
+  <header class="topbar" id="topbar">
+    <a class="brand" href="#top" aria-label="Da Marinelli">
+      <!-- Logo (stemma) a sinistra del nome. Il file è logo.jpg, nella stessa cartella -->
+      <img class="brand-logo" src="logo.jpg" alt="" width="44" height="45">
+      <span>Da Marinelli</span>
+    </a>
+    <div class="topbar-right">
+      <!-- Selettore lingua: IT / EN / DE / SL -->
+      <div class="lang" role="group" data-i18n-aria="langLabel" aria-label="Lingua">
+        <button type="button" data-lang="it" aria-pressed="true">IT</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="de" aria-pressed="false">DE</button>
+        <button type="button" data-lang="sl" aria-pressed="false">SL</button>
+      </div>
+      <a class="btn btn--primary" href="#prenota" data-i18n="bookShort">Prenota</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+      <div class="hero-arch">
+        <p class="hero-tag" data-i18n="brandTag">Pizzeria e bar</p>
+        <h1>Da Marinelli</h1>
+        <p class="hero-line" data-i18n="heroLine">Fior di latte di Agerola, pomodoro San Marzano e pizze fritte.</p>
+        <div class="hero-cta">
+          <a class="btn btn--primary" href="#prenota" data-i18n="bookCta">Prenota un tavolo</a>
+          <button type="button" class="btn btn--light js-open-alg" data-i18n="allergensCta">Allergeni</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Ricerca ===== -->
+    <div class="container searchbar">
+      <label class="search">
+        <span class="visually-hidden" data-i18n="searchLabel">Cerca nel menù</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="q" type="search" autocomplete="off" enterkeyhint="search" data-i18n-ph="searchPh" placeholder="Cerca un piatto o un ingrediente">
+        <button type="button" id="q-clear" class="icon-btn" hidden data-i18n-aria="clearSearch" aria-label="Cancella ricerca">&times;</button>
+      </label>
+    </div>
+
+    <!-- ===== Filtri per categoria (si fissano sotto la barra superiore) ===== -->
+    <nav class="chips-wrap" id="chips-wrap" data-i18n-aria="navLabel" aria-label="Categorie del menù">
+      <ul class="chips" id="chips"></ul>
+    </nav>
+
+    <!-- ===== Menù (generato da script.js) ===== -->
+    <div class="container">
+      <div id="menu"></div>
+      <p class="empty" id="empty" hidden data-i18n="noResults">Nessun piatto trovato. Prova con un’altra ricerca.</p>
+
+      <aside class="notes" aria-label="Info">
+        <p><strong data-i18n="cover">Coperto</strong>: <span id="cover-price"></span></p>
+        <p data-i18n="frozenNote"></p>
+        <p>
+          <span data-i18n="allergenNote"></span>
+          <button type="button" class="link js-open-alg" data-i18n="allergensCta">Allergeni</button>
+        </p>
+      </aside>
+    </div>
+
+    <!-- ===== Prenotazione ===== -->
+    <section class="container section" id="prenota" aria-labelledby="book-title">
+      <div class="panel">
+        <h2 class="group-title" id="book-title" data-i18n="bookTitle">Prenota un tavolo</h2>
+        <p class="muted" data-i18n="bookSub"></p>
+
+        <form id="book-form" novalidate>
+          <div class="form-grid">
+            <div class="field span-2">
+              <label for="b-name" data-i18n="fName">Nome e cognome</label>
+              <input class="input" id="b-name" autocomplete="name" required>
+            </div>
+            <div class="field span-2">
+              <label for="b-phone" data-i18n="fPhone">Telefono</label>
+              <input class="input" id="b-phone" type="tel" inputmode="tel" autocomplete="tel" required>
+            </div>
+            <div class="field">
+              <label for="b-date" data-i18n="fDate">Data</label>
+              <input class="input" id="b-date" type="date" required>
+            </div>
+            <div class="field">
+              <label for="b-time" data-i18n="fTime">Orario</label>
+              <input class="input" id="b-time" type="time" required>
+            </div>
+            <div class="field span-2 span-half">
+              <label for="b-guests" data-i18n="fGuests">Persone</label>
+              <input class="input" id="b-guests" type="number" min="1" max="20" inputmode="numeric" required>
+            </div>
+            <div class="field span-2">
+              <label for="b-notes" data-i18n="fNotes">Note</label>
+              <textarea class="input" id="b-notes" rows="3"></textarea>
+            </div>
+          </div>
+          <p class="form-error" id="b-error" role="alert" hidden></p>
+          <p style="margin:18px 0 0"><button class="btn btn--primary btn--block" type="submit" data-i18n="fSubmit">Invia richiesta</button></p>
+        </form>
+
+        <!-- Conferma dopo l'invio -->
+        <div class="book-ok" id="book-ok" tabindex="-1" hidden>
+          <h3 data-i18n="okTitle">Richiesta inviata</h3>
+          <p data-i18n="okText"></p>
+          <a class="btn btn--primary" id="book-wa" href="#" target="_blank" rel="noopener" hidden data-i18n="okWa">Invia anche su WhatsApp</a>
+          <button type="button" class="btn btn--outline" id="book-again" data-i18n="okAgain">Nuova richiesta</button>
+        </div>
+
+        <!-- Prenotazioni online disattivate dall'area riservata -->
+        <div id="book-off" hidden>
+          <p data-i18n="bookingsOff"></p>
+          <a class="btn btn--primary" id="book-off-call" href="#" data-i18n="call">Chiama</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Contatti e orari ===== -->
+    <section class="container section" id="contatti" aria-labelledby="info-title">
+      <h2 class="group-title" id="info-title" data-i18n="infoTitle">Contatti e orari</h2>
+      <dl class="info" id="contact-list"></dl>
+      <div class="actions" id="contact-actions"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> Da Marinelli · <span data-i18n="footerRights">Tutti i diritti riservati</span></p>
+    <p><a href="admin.html" data-i18n="staffArea">Area riservata</a></p>
+  </footer>
+
+  <button type="button" class="to-top" id="to-top" hidden data-i18n-aria="toTop" aria-label="Torna su">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <!-- ===== Finestra allergeni ===== -->
+  <dialog class="sheet" id="alg-dialog" aria-labelledby="alg-title">
+    <div class="sheet-head">
+      <h2 id="alg-title" data-i18n="allergensTitle">Allergeni e conservazione</h2>
+      <button type="button" class="icon-btn" data-close data-i18n-aria="close" aria-label="Chiudi">&times;</button>
+    </div>
+    <div class="sheet-body">
+      <p data-i18n="frozenNote"></p>
+      <p data-i18n="allergenNote"></p>
+      <ol class="alg-list" id="alg-list"></ol>
+    </div>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
