@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": 1793725287095,
+  "updatedAt": 1793725336809,
   "menu": {
     "items": [
       {
@@ -2269,6 +2269,32 @@
           {
             "label": null,
             "value": 13
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "mw0xr3s9fq3xr",
+        "cat": "antipasti",
+        "name": {
+          "it": "Southe cozze e vongole",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 15
           }
         ],
         "from": false,
