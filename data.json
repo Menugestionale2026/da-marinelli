@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": 1793725242771,
+  "updatedAt": 1793725287095,
   "menu": {
     "items": [
       {
@@ -2243,6 +2243,32 @@
           {
             "label": null,
             "value": 15
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "mw0xq1fb5d6p7",
+        "cat": "antipasti",
+        "name": {
+          "it": "Southe Cozze",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 13
           }
         ],
         "from": false,
