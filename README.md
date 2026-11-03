@@ -22,9 +22,15 @@ python3 -m http.server 8000
 
 e vai su `http://localhost:8000`.
 
+## Come si aggiornano i dati
+
+- `data.json` contiene menù, prezzi, orari e contatti **pubblicati**: il menù dei clienti (`index.html`) legge questo file.
+- `admin.html` modifica i dati e, se è collegata con un token GitHub (Impostazioni → Pubblicazione online), riscrive `data.json` a ogni salvataggio. GitHub Pages lo ripubblica in uno o due minuti.
+- Il token (fine-grained, solo repository `da-marinelli`, permesso *Contents: Read and write*) resta nel browser del titolare. Senza token le modifiche restano solo in quel browser.
+- Il PIN dell'area gestionale non protegge davvero i dati: la chiave è il token.
+
 ## Limiti da conoscere
 
-- Menù, prenotazioni e impostazioni sono salvati nel `localStorage` del browser: le modifiche fatte da `admin.html` **non** arrivano ai telefoni dei clienti e le prenotazioni dei clienti **non** arrivano al titolare. Per l'uso reale serve un database online.
-- Le prenotazioni online sono **spente** (`ONLINE_BOOKINGS = false` in `script.js`): al posto del modulo il menù mostra i pulsanti Chiama e WhatsApp. Da riaccendere solo dopo aver collegato un database online. Dall'area gestionale si possono comunque inserire a mano le prenotazioni telefoniche.
-- In `script.js` (`DEFAULT_SETTINGS`) telefono e indirizzo sono impostati; mancano ancora gli orari e, se serve, il numero WhatsApp.
-- Il PIN è controllato nel browser: tiene lontani i curiosi, non è una vera protezione.
+- Le prenotazioni online sono **spente** (`ONLINE_BOOKINGS = false` in `script.js`): al posto del modulo il menù mostra Chiama e WhatsApp. Le prenotazioni inserite a mano in `admin.html` restano nel browser e non vengono pubblicate.
+- Il numero WhatsApp, se c'è, si imposta da Impostazioni.
+- Ogni modifica pubblicata è un commit del repository.

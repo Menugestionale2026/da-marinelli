@@ -27,7 +27,10 @@
     menu: 'marinelli.menu.v1',
     bookings: 'marinelli.bookings.v1',
     settings: 'marinelli.settings.v1',
-    lang: 'marinelli.lang.v1'
+    lang: 'marinelli.lang.v1',
+    updated: 'marinelli.updated.v1',     // quando è stata fatta l'ultima modifica in questo browser
+    published: 'marinelli.published.v1', // ultima versione online vista da questo browser
+    gh: 'marinelli.gh.v1'                // token GitHub (solo sul dispositivo del titolare)
   };
   const MENU_VERSION = 2; // alza questo numero quando cambi i dati di partenza (SEED)
 
@@ -802,7 +805,7 @@
     email: '',
     address: 'Piazza della Repubblica 21, Monfalcone (GO)',
     mapUrl: '',                   // facoltativo: link Google Maps
-    hours: T('Orari da inserire nell’area riservata.', 'Opening hours to be added in the staff area.', 'Öffnungszeiten im Mitarbeiterbereich einzutragen.', 'Delovni čas vnesite v območju za zaposlene.'),
+    hours: T('Lunedì: chiuso\nMartedì – domenica: 18:30 – 24:00', 'Monday: closed\nTuesday – Sunday: 6:30 pm – midnight', 'Montag: Ruhetag\nDienstag – Sonntag: 18:30 – 24:00 Uhr', 'Ponedeljek: zaprto\nTorek – nedelja: 18.30 – 24.00'),
     coperto: 2.5,
     maxGuests: 20,
     bookingsEnabled: true,
@@ -853,7 +856,9 @@
     return i;
   }
   function saveMenu(items) {
-    return storage.set(KEYS.menu, { version: MENU_VERSION, items: items.map(normalizeItem) });
+    const ok = storage.set(KEYS.menu, { version: MENU_VERSION, items: items.map(normalizeItem) });
+    markDirty();
+    return ok;
   }
   function resetMenu() {
     return saveMenu(defaultMenu());
@@ -875,7 +880,9 @@
     return out;
   }
   function saveSettings(s) {
-    return storage.set(KEYS.settings, s);
+    const ok = storage.set(KEYS.settings, s);
+    markDirty();
+    return ok;
   }
 
   function checkPin(pin) {
@@ -886,7 +893,7 @@
   function setPin(pin) {
     const s = getSettings();
     s.pinHash = hashPin(pin);
-    return saveSettings(s);
+    return storage.set(KEYS.settings, s); // il PIN resta su questo dispositivo: non si pubblica
   }
   function isDefaultPin() {
     return !getSettings().pinHash;
@@ -910,6 +917,227 @@
     return d;
   }
 
+
+  /* ===================================================================
+     5b. PUBBLICAZIONE ONLINE
+     Menù e impostazioni pubbliche vivono nel file data.json del repository GitHub.
+     - Il menù pubblico (index.html) legge data.json: tutti i clienti vedono gli stessi dati.
+     - L'area gestionale, se è collegata con un token, riscrive data.json a ogni salvataggio.
+     - Le prenotazioni NON vengono pubblicate: restano nel browser.
+     =================================================================== */
+  const PUBLISH = { repo: 'Menugestionale2026/da-marinelli', branch: 'main', file: 'data.json' };
+
+  const getToken = () => { const g = storage.get(KEYS.gh, null); return g && g.token ? String(g.token) : ''; };
+  const localUpdated = () => Number(storage.get(KEYS.updated, 0)) || 0;
+  const stamp = (p) => (p ? Number(p.updatedAt) || 0 : 0);
+  const validPayload = (p) => !!(p && typeof p === 'object' && p.menu && Array.isArray(p.menu.items) && p.settings && typeof p.settings === 'object');
+  const cachedPayload = () => { const p = storage.get(KEYS.published, null); return validPayload(p) ? p : null; };
+  const syncedAt = () => stamp(cachedPayload());
+  const unpublished = () => localUpdated() > syncedAt();
+  const newest = (a, b) => (validPayload(a) && (!validPayload(b) || stamp(a) >= stamp(b)) ? a : (validPayload(b) ? b : null));
+
+  // Solo ciò che deve essere pubblico: niente PIN, niente prenotazioni
+  function publicSettings(s) {
+    return {
+      phone: s.phone, whatsapp: s.whatsapp, email: s.email, address: s.address, mapUrl: s.mapUrl,
+      hours: normLang(s.hours), coperto: s.coperto, maxGuests: s.maxGuests
+    };
+  }
+  function buildPayload(updatedAt) {
+    return { schema: 1, updatedAt: updatedAt, menu: { items: getMenu() }, settings: publicSettings(getSettings()) };
+  }
+  function mergeSettings(pub) {
+    const out = Object.assign({}, DEFAULT_SETTINGS, pub);
+    out.hours = pub && pub.hours ? Object.assign({ it: '', en: '', de: '', sl: '' }, pub.hours) : DEFAULT_SETTINGS.hours;
+    return out;
+  }
+
+  // Quale versione mostrare: la più recente tra quella pubblicata e la copia di lavoro di questo browser
+  function resolveData(remote) {
+    if (!validPayload(remote) || localUpdated() > stamp(remote)) return { items: getMenu(), settings: getSettings() };
+    return { items: remote.menu.items.map(normalizeItem).map(backfillSl), settings: mergeSettings(remote.settings) };
+  }
+
+  async function fetchPublished() {
+    try {
+      const r = await fetch(PUBLISH.file + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!r.ok) return null;
+      const p = await r.json();
+      if (!validPayload(p)) return null;
+      if (stamp(p) >= syncedAt()) storage.set(KEYS.published, p);
+      return newest(p, cachedPayload());
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function adoptPayload(p) {
+    storage.set(KEYS.menu, { version: MENU_VERSION, items: p.menu.items.map(normalizeItem) });
+    const cur = storage.get(KEYS.settings, {}) || {};
+    storage.set(KEYS.settings, Object.assign({}, cur, p.settings));
+    storage.set(KEYS.updated, stamp(p));
+    storage.set(KEYS.published, p);
+  }
+
+  /* ---------- stato e scrittura su GitHub ---------- */
+  const publishState = { kind: getToken() ? 'idle' : 'local', msg: '', at: 0 };
+  const publishListeners = [];
+  function setPublishState(kind, msg) {
+    publishState.kind = kind;
+    publishState.msg = msg || '';
+    if (kind === 'ok') publishState.at = Date.now();
+    publishListeners.forEach((fn) => { try { fn(publishState); } catch (e) { /* ignora */ } });
+  }
+  const onPublishState = (fn) => { publishListeners.push(fn); };
+
+  function PublishError(message) { this.message = message; }
+  PublishError.prototype = Object.create(Error.prototype);
+
+  const b64enc = (str) => {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    bytes.forEach((b) => { bin += String.fromCharCode(b); });
+    return btoa(bin);
+  };
+  const b64dec = (b64) => {
+    const bin = atob(String(b64).replace(/\s/g, ''));
+    return new TextDecoder().decode(Uint8Array.from(bin, (c) => c.charCodeAt(0)));
+  };
+
+  async function gh(path, init) {
+    const token = getToken();
+    if (!token) throw new PublishError('Non sei collegato a GitHub.');
+    try {
+      return await fetch('https://api.github.com/repos/' + PUBLISH.repo + path, Object.assign({ cache: 'no-store' }, init, {
+        headers: Object.assign({ Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + token, 'X-GitHub-Api-Version': '2022-11-28' }, init && init.headers)
+      }));
+    } catch (e) {
+      throw new PublishError('Connessione assente: riprova quando sei online.');
+    }
+  }
+  function httpMessage(res) {
+    if (res.status === 401) return 'Il token non è valido o è scaduto: creane uno nuovo e ricollegalo.';
+    if (res.status === 403 || res.status === 404) return 'Il token non ha il permesso di modificare il repository: serve «Contents: Read and write» su da-marinelli.';
+    return 'GitHub ha risposto con un errore (' + res.status + ').';
+  }
+  const filePath = () => '/contents/' + encodeURIComponent(PUBLISH.file);
+
+  async function pullRemote() {
+    const res = await gh(filePath() + '?ref=' + encodeURIComponent(PUBLISH.branch));
+    if (res.status === 404) return { payload: null, sha: null };
+    if (!res.ok) throw new PublishError(httpMessage(res));
+    const j = await res.json();
+    let payload = null;
+    try { payload = JSON.parse(b64dec(j.content)); } catch (e) { payload = null; }
+    return { payload: validPayload(payload) ? payload : null, sha: j.sha };
+  }
+
+  let publishing = false, rerun = false, publishTimer = null;
+
+  function schedulePublish() {
+    if (!getToken()) { setPublishState('local'); return; }
+    clearTimeout(publishTimer);
+    setPublishState('pending');
+    publishTimer = setTimeout(() => { publishNow(); }, 1500);
+  }
+
+  async function publishNow(opts) {
+    clearTimeout(publishTimer);
+    if (!getToken()) { setPublishState('local'); return false; }
+    if (publishing) { rerun = true; return false; }
+    publishing = true;
+    setPublishState('saving');
+    let ok = false;
+    try {
+      for (let attempt = 0; attempt < 3 && !ok; attempt++) {
+        const remote = await pullRemote();
+        const mine = localUpdated() || Date.now();
+        // Qualcuno (un altro dispositivo) ha pubblicato dopo l'ultima sincronizzazione: non lo sovrascrivo in silenzio
+        if (!(opts && opts.force) && remote.payload && stamp(remote.payload) > syncedAt() && stamp(remote.payload) !== mine) {
+          setPublishState('conflict');
+          return false;
+        }
+        const payload = buildPayload(mine);
+        const body = {
+          message: 'Aggiornamento dal pannello di gestione',
+          content: b64enc(JSON.stringify(payload, null, 2) + '\n'),
+          branch: PUBLISH.branch
+        };
+        if (remote.sha) body.sha = remote.sha;
+        const res = await gh(filePath(), { method: 'PUT', body: JSON.stringify(body) });
+        if (res.status === 409 || res.status === 422) continue; // il file è cambiato nel frattempo: riprova
+        if (!res.ok) throw new PublishError(httpMessage(res));
+        storage.set(KEYS.published, payload);
+        ok = true;
+      }
+      if (!ok) throw new PublishError('Non sono riuscito a pubblicare: riprova tra poco.');
+      setPublishState('ok');
+    } catch (e) {
+      setPublishState('error', e instanceof PublishError ? e.message : 'Errore imprevisto durante la pubblicazione.');
+    } finally {
+      publishing = false;
+    }
+    if (rerun) { rerun = false; schedulePublish(); }
+    return ok;
+  }
+
+  // All'apertura dell'area gestionale: allinea questo browser con ciò che è online
+  async function syncFromRemote() {
+    if (!getToken()) { setPublishState('local'); return 'local'; }
+    try {
+      const remote = await pullRemote();
+      const rU = stamp(remote.payload);
+      if (unpublished()) {
+        if (rU > syncedAt() && rU !== localUpdated()) { setPublishState('conflict'); return 'conflict'; }
+        schedulePublish();
+        return 'publish';
+      }
+      if (remote.payload && rU > localUpdated()) {
+        adoptPayload(remote.payload);
+        setPublishState('idle');
+        return 'adopted';
+      }
+      if (!remote.payload) { storage.set(KEYS.updated, Math.max(Date.now(), localUpdated() + 1)); schedulePublish(); return 'publish'; }
+      setPublishState('idle');
+      return 'same';
+    } catch (e) {
+      setPublishState('error', e instanceof PublishError ? e.message : 'Errore imprevisto.');
+      return 'error';
+    }
+  }
+
+  async function useRemote() {
+    const remote = await pullRemote();
+    if (remote.payload) adoptPayload(remote.payload);
+    setPublishState('idle');
+  }
+
+  async function connect(token) {
+    const prev = storage.get(KEYS.gh, null);
+    storage.set(KEYS.gh, { token: String(token || '').trim() });
+    try {
+      const res = await gh('');
+      if (!res.ok) throw new PublishError(httpMessage(res));
+      await pullRemote(); // controlla anche che il token possa leggere data.json
+    } catch (e) {
+      storage.set(KEYS.gh, prev);
+      setPublishState(getToken() ? 'idle' : 'local');
+      throw e;
+    }
+    return syncFromRemote();
+  }
+  function disconnect() {
+    clearTimeout(publishTimer);
+    storage.set(KEYS.gh, null);
+    setPublishState('local');
+  }
+
+  // Ogni salvataggio dell'area gestionale passa da qui
+  function markDirty() {
+    storage.set(KEYS.updated, Math.max(Date.now(), localUpdated() + 1));
+    schedulePublish();
+  }
+
   window.MarinelliCore = {
     LANGS, LOCALES, KEYS, UI, ALLERGENS, CATEGORIES, GROUPS, CAT_ORDER, SEED,
     DEFAULT_SETTINGS, DEFAULT_PIN, ONLINE_BOOKINGS, bookingsOpen,
@@ -919,6 +1147,8 @@
     getSettings, saveSettings,
     checkPin, setPin, isDefaultPin,
     getLang, setStoredLang, normalizeItem,
+    PUBLISH, getToken, connect, disconnect, publishNow, schedulePublish, syncFromRemote, useRemote,
+    getPublishState: () => publishState, onPublishState, unpublished, buildPayload, resolveData, fetchPublished, cachedPayload,
     storage
   };
 
@@ -933,9 +1163,14 @@
       lang: getLang(),
       group: 'all',
       query: '',
-      items: getMenu(),
-      settings: getSettings()
+      items: [],
+      settings: DEFAULT_SETTINGS
     };
+    // Dati da mostrare subito: l'ultima versione online vista da questo browser (o la copia di lavoro del titolare)
+    const cached = cachedPayload();
+    const firstData = resolveData(cached);
+    state.items = firstData.items;
+    state.settings = firstData.settings;
     const L = () => state.lang;
     const tt = (k) => t(k, state.lang);
 
@@ -1232,18 +1467,37 @@
     window.addEventListener('scroll', () => { el.toTop.hidden = window.scrollY < 700; }, { passive: true });
     el.toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+    // Applica i dati (pubblicati o di lavoro); ridisegna solo se qualcosa è cambiato
+    function applyData(remote) {
+      const d = resolveData(remote);
+      const changed = JSON.stringify(d) !== JSON.stringify({ items: state.items, settings: state.settings });
+      state.items = d.items;
+      state.settings = d.settings;
+      return changed;
+    }
+
     // Se l'area riservata modifica i dati in un'altra scheda, aggiorna subito
     window.addEventListener('storage', (e) => {
-      if (e.key === KEYS.menu || e.key === KEYS.settings) {
-        state.items = getMenu();
-        state.settings = getSettings();
+      if (e.key === KEYS.menu || e.key === KEYS.settings || e.key === KEYS.updated || e.key === KEYS.published) {
+        applyData(cachedPayload());
         renderAll();
       }
     });
 
     $('#year').textContent = new Date().getFullYear();
     initBookingDefaults();
-    renderAll();
+
+    // Chi non ha ancora una copia aspetta (al massimo 1,5 s) i dati online, per non mostrare prezzi vecchi
+    let painted = false;
+    const paint = () => { painted = true; renderAll(); };
+    let waitTimer = null;
+    if (cached || localUpdated() > 0) paint();
+    else waitTimer = setTimeout(() => { if (!painted) paint(); }, 1500);
+    fetchPublished().then((p) => {
+      clearTimeout(waitTimer);
+      const changed = applyData(p || cachedPayload());
+      if (!painted || changed) paint();
+    });
   }
 
   if (document.body && document.body.getAttribute('data-page') === 'menu') {

@@ -1,0 +1,2244 @@
+{
+  "schema": 1,
+  "updatedAt": 1793709648157,
+  "menu": {
+    "items": [
+      {
+        "id": "ant-marinelli",
+        "cat": "antipasti",
+        "name": {
+          "it": "Marinelli",
+          "en": "Marinelli",
+          "de": "Marinelli",
+          "sl": "Marinelli"
+        },
+        "desc": {
+          "it": "Bruschetta con pomodorini, crocchè, frittatina, arancino, zeppoline e bufala 125 g.",
+          "en": "Bruschetta with cherry tomatoes, potato croquette, frittatina (fried pasta bites), arancino (rice ball), zeppoline (fried dough balls) and 125 g buffalo mozzarella.",
+          "de": "Bruschetta mit Kirschtomaten, Kartoffelkroketten, Frittatina (frittierte Nudelbällchen), Arancino (Reisbällchen), Zeppoline (frittierte Teigbällchen) und 125 g Büffelmozzarella.",
+          "sl": "Bruschetta s češnjevimi paradižniki, krompirjev kroket, frittatina (ocvrte testeninske kroglice), arancino (riževa kroglica), zeppoline (ocvrte kroglice iz testa) in 125 g bivolje mocarele."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 15
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          4,
+          8
+        ]
+      },
+      {
+        "id": "ant-bruschette",
+        "cat": "antipasti",
+        "name": {
+          "it": "Bruschette Varie",
+          "en": "Bruschette Varie",
+          "de": "Bruschette Varie",
+          "sl": "Bruschette Varie"
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": {
+              "it": "Con pomodorini",
+              "en": "With cherry tomatoes",
+              "de": "Mit Kirschtomaten",
+              "sl": "S češnjevimi paradižniki"
+            },
+            "value": 2
+          },
+          {
+            "label": {
+              "it": "Con crema di friarielli e provola",
+              "en": "With friarielli cream and provola",
+              "de": "Mit Friarielli-Creme und Provola",
+              "sl": "S kremo iz friariellov in provolo"
+            },
+            "value": 2
+          },
+          {
+            "label": {
+              "it": "Con pancetta e crema di zucchine",
+              "en": "With pancetta and courgette cream",
+              "de": "Mit Pancetta und Zucchinicreme",
+              "sl": "S panceto in kremo iz bučk"
+            },
+            "value": 2
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "ant-sfizioso",
+        "cat": "antipasti",
+        "name": {
+          "it": "Sfizioso",
+          "en": "Sfizioso",
+          "de": "Sfizioso",
+          "sl": "Sfizioso"
+        },
+        "desc": {
+          "it": "Bruschetta con pomodorini, polpettina di carne*, bocconcini di pollo*, alette di pollo piccante*, verdure pastellate*, jalapeño* (ripieno di formaggio) e zeppoline.",
+          "en": "Bruschetta with cherry tomatoes, meatball*, chicken bites*, spicy chicken wings*, battered vegetables*, cheese-stuffed jalapeño* and zeppoline (fried dough balls).",
+          "de": "Bruschetta mit Kirschtomaten, Fleischbällchen*, Hähnchenhäppchen*, scharfen Hähnchenflügeln*, Gemüse im Backteig*, Jalapeño* (mit Käse gefüllt) und Zeppoline (frittierte Teigbällchen).",
+          "sl": "Bruschetta s češnjevimi paradižniki, mesna kroglica*, piščančji koščki*, pikantna piščančja krilca*, zelenjava v testu*, jalapeño* (polnjen s sirom) in zeppoline (ocvrte kroglice iz testa)."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 16.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          4,
+          8
+        ]
+      },
+      {
+        "id": "ant-newyork",
+        "cat": "antipasti",
+        "name": {
+          "it": "New York",
+          "en": "New York",
+          "de": "New York",
+          "sl": "New York"
+        },
+        "desc": {
+          "it": "Würstel e patate fritte*.",
+          "en": "Würstel and French fries*.",
+          "de": "Würstel und Pommes frites*.",
+          "sl": "Hrenovke in ocvrt krompirček*."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 10
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-marinara",
+        "cat": "classiche",
+        "name": {
+          "it": "Marinara",
+          "en": "Marinara",
+          "de": "Marinara",
+          "sl": "Marinara"
+        },
+        "desc": {
+          "it": "Olio EVO, Pomodoro S. Marzano, Origano, Aglio e Basilico.",
+          "en": "Extra virgin olive oil, San Marzano tomato, Oregano, Garlic and Basil.",
+          "de": "Natives Olivenöl extra, San-Marzano-Tomaten, Oregano, Knoblauch und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, paradižnik San Marzano, origano, česen in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 5.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1
+        ]
+      },
+      {
+        "id": "pz-margherita",
+        "cat": "classiche",
+        "name": {
+          "it": "Margherita",
+          "en": "Margherita",
+          "de": "Margherita",
+          "sl": "Margherita"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 7
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-diavola",
+        "cat": "classiche",
+        "name": {
+          "it": "Diavola",
+          "en": "Diavola",
+          "de": "Diavola",
+          "sl": "Diavola"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Spianata calabra e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Calabrian spianata (spicy salami) and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Kalabrische Spianata (scharfe Salami) und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, kalabrijska spianata (pikantna salama) in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 10
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-siciliana",
+        "cat": "classiche",
+        "name": {
+          "it": "Siciliana",
+          "en": "Siciliana",
+          "de": "Siciliana",
+          "sl": "Siciliana"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Melanzane fritte e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Fried aubergines and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Frittierte Auberginen und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, ocvrti jajčevci in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 9.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-tropea",
+        "cat": "classiche",
+        "name": {
+          "it": "Tropea",
+          "en": "Tropea",
+          "de": "Tropea",
+          "sl": "Tropea"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Cipolla di Tropea, Tonno di pinna gialla e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Tropea red onion, Yellowfin tuna and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Rote Zwiebel aus Tropea, Gelbflossenthunfisch und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, rdeča čebula iz Tropee, rumenoplavuti tun in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 10
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          5,
+          8
+        ]
+      },
+      {
+        "id": "pz-romana",
+        "cat": "classiche",
+        "name": {
+          "it": "Romana",
+          "en": "Romana",
+          "de": "Romana",
+          "sl": "Romana"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Acciughe, Capperi e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Anchovies, Capers and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Sardellen, Kapern und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, inčuni, kapre in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 10
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          5,
+          8
+        ]
+      },
+      {
+        "id": "pz-primavera",
+        "cat": "classiche",
+        "name": {
+          "it": "Primavera",
+          "en": "Primavera",
+          "de": "Primavera",
+          "sl": "Primavera"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodorini ciliegini, Rucola, Prosciutto crudo, Scaglie di grana e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Cherry tomatoes, Rocket, Cured ham (prosciutto crudo), Grana cheese shavings and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Kirschtomaten, Rucola, Rohschinken (Prosciutto crudo), Grana-Späne und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, češnjevi paradižniki, rukola, pršut, lističi sira grana in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 12
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-4formaggi",
+        "cat": "classiche",
+        "name": {
+          "it": "4 Formaggi",
+          "en": "4 Formaggi",
+          "de": "4 Formaggi",
+          "sl": "4 Formaggi"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Brie, Gorgonzola, Edamer e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Brie, Gorgonzola, Edam and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Brie, Gorgonzola, Edamer und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, brie, gorgonzola, edamec in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 10
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-ripieno",
+        "cat": "classiche",
+        "name": {
+          "it": "Ripieno al Forno",
+          "en": "Ripieno al Forno",
+          "de": "Ripieno al Forno",
+          "sl": "Ripieno al Forno"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Ricotta (condita con sale, olio, pepe e basilico), Prosciutto cotto, Funghi champignon e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Ricotta (seasoned with salt, oil, pepper and basil), Cooked ham, Button mushrooms and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Ricotta (mit Salz, Öl, Pfeffer und Basilikum gewürzt), Kochschinken, Champignons und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, rikota (začinjena s soljo, oljem, poprom in baziliko), kuhana šunka, šampinjoni in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 11
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-wurstel",
+        "cat": "classiche",
+        "name": {
+          "it": "Würstel e Patate",
+          "en": "Würstel e Patate",
+          "de": "Würstel e Patate",
+          "sl": "Würstel e Patate"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Würstel, Patate fritte* e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Frankfurter sausage, French fries* and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Würstel, Pommes frites* und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, hrenovke, ocvrt krompirček* in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 10
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-marinelli",
+        "cat": "classiche",
+        "name": {
+          "it": "Marinelli",
+          "en": "Marinelli",
+          "de": "Marinelli",
+          "sl": "Marinelli"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Pomodorini ciliegini, Prosciutto crudo, Bufala da 125 g messa al centro della pizza e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Cherry tomatoes, Cured ham (prosciutto crudo), 125 g buffalo mozzarella placed in the centre of the pizza and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Kirschtomaten, Rohschinken (Prosciutto crudo), 125 g Büffelmozzarella in der Mitte der Pizza und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, češnjevi paradižniki, pršut, 125 g bivolje mocarele v sredini pice in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 14.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-filetto",
+        "cat": "speciali",
+        "name": {
+          "it": "Filetto",
+          "en": "Filetto",
+          "de": "Filetto",
+          "sl": "Filetto"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, All’ombra di pomodoro S. Marzano, Pomodorini ciliegini e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, A hint of San Marzano tomato, Cherry tomatoes and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Mit einem Hauch San-Marzano-Tomate, Kirschtomaten und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, kanček paradižnika San Marzano, češnjevi paradižniki in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 9.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-scarola",
+        "cat": "speciali",
+        "name": {
+          "it": "Scarola",
+          "en": "Scarola",
+          "de": "Scarola",
+          "sl": "Scarola"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Scarola (condita con olio, olive e aglio), Provola affumicata e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Escarole (dressed with oil, olives and garlic), Smoked provola cheese and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Endivie (mit Öl, Oliven und Knoblauch angemacht), Geräucherter Provola-Käse und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, endivija (začinjena z oljem, olivami in česnom), dimljena provola in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 12
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-capricciosa",
+        "cat": "speciali",
+        "name": {
+          "it": "Capricciosa",
+          "en": "Capricciosa",
+          "de": "Capricciosa",
+          "sl": "Capricciosa"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Prosciutto cotto, Funghi champignon, Olive nere, Carciofi e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Cooked ham, Button mushrooms, Black olives, Artichokes and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Kochschinken, Champignons, Schwarze Oliven, Artischocken und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, kuhana šunka, šampinjoni, črne olive, artičoke in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 11
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-4stagioni",
+        "cat": "speciali",
+        "name": {
+          "it": "4Stagioni",
+          "en": "4Stagioni",
+          "de": "4Stagioni",
+          "sl": "4Stagioni"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Olive nere, Prosciutto cotto, Carciofi, Funghi champignon e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Black olives, Cooked ham, Artichokes, Button mushrooms and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Schwarze Oliven, Kochschinken, Artischocken, Champignons und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, črne olive, kuhana šunka, artičoke, šampinjoni in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 11
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-vesuvio",
+        "cat": "speciali",
+        "name": {
+          "it": "O' Vesuvio",
+          "en": "O' Vesuvio",
+          "de": "O' Vesuvio",
+          "sl": "O' Vesuvio"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Cicoli, Ricotta (condita con sale, olio, pepe e basilico), Spianata e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Pork cracklings (cicoli), Ricotta (seasoned with salt, oil, pepper and basil), Spianata salami and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Schweinegrieben (Cicoli), Ricotta (mit Salz, Öl, Pfeffer und Basilikum gewürzt), Spianata-Salami und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, ocvirki, rikota (začinjena s soljo, oljem, poprom in baziliko), salama spianata in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 12
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-altroadige",
+        "cat": "speciali",
+        "name": {
+          "it": "Altro Adige",
+          "en": "Altro Adige",
+          "de": "Altro Adige",
+          "sl": "Altro Adige"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Speck, Melanzane grigliate (condite) e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Speck (smoked ham), Grilled aubergines (dressed) and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Speck, Gegrillte Auberginen (angemacht) und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, speck (dimljena šunka), jajčevci na žaru (začinjeni) in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 10.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-ortolana",
+        "cat": "speciali",
+        "name": {
+          "it": "Ortolana",
+          "en": "Ortolana",
+          "de": "Ortolana",
+          "sl": "Ortolana"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Melanzane e zucchine alla griglia, Peperoni, Olive nere (le verdure sono condite) e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Grilled aubergines and courgettes, Peppers, Black olives (the vegetables are dressed) and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Gegrillte Auberginen und Zucchini, Paprika, Schwarze Oliven (das Gemüse ist angemacht) und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, jajčevci in bučke na žaru, paprike, črne olive (zelenjava je začinjena) in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 11.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-mortadella",
+        "cat": "speciali",
+        "name": {
+          "it": "Mortadella e Pistacchio",
+          "en": "Mortadella e Pistacchio",
+          "de": "Mortadella e Pistacchio",
+          "sl": "Mortadella e Pistacchio"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Mortadella con pistacchio, Crema di pistacchio, Granella di pistacchio e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Mortadella with pistachio, Pistachio cream, Chopped pistachios and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Mortadella mit Pistazien, Pistaziencreme, Pistaziensplitter und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, mortadela s pistacijami, pistacijeva krema, sesekljane pistacije in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 11.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          2,
+          8
+        ]
+      },
+      {
+        "id": "pz-salsiccia",
+        "cat": "speciali",
+        "name": {
+          "it": "Salsiccia e Friarielli",
+          "en": "Salsiccia e Friarielli",
+          "de": "Salsiccia e Friarielli",
+          "sl": "Salsiccia e Friarielli"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Salsiccia, Friarielli (conditi) e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Italian sausage, Friarielli (broccoli rabe, dressed) and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Italienische Salsiccia, Friarielli (Stängelkohl, angemacht) und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, italijanska klobasa, friarielli (repni brokoli, začinjen) in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 12
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-regina",
+        "cat": "speciali",
+        "name": {
+          "it": "Regina",
+          "en": "Regina",
+          "de": "Regina",
+          "sl": "Regina"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Cornicione ripieno di ricotta (condita) e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Crust filled with ricotta (seasoned) and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Pizzarand mit Ricotta gefüllt (gewürzt) und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, rob pice, polnjen z začinjeno rikoto in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 11
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-bufala",
+        "cat": "speciali",
+        "name": {
+          "it": "Bufala",
+          "en": "Bufala",
+          "de": "Bufala",
+          "sl": "Bufala"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Bufala campana da 125 g messa al centro della pizza e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, 125 g Campanian buffalo mozzarella placed in the centre of the pizza and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, 125 g Büffelmozzarella aus Kampanien in der Mitte der Pizza und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, 125 g kampanijske bivolje mocarele v sredini pice in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 12
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-anemecore",
+        "cat": "speciali",
+        "name": {
+          "it": "Aneme e Core",
+          "en": "Aneme e Core",
+          "de": "Aneme e Core",
+          "sl": "Aneme e Core"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Cornicione tagliato e ripieno di prosciutto crudo e bufala e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Crust cut open and filled with cured ham and buffalo mozzarella and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Aufgeschnittener Pizzarand, gefüllt mit Rohschinken und Büffelmozzarella und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, razrezan rob pice, polnjen s pršutom in bivoljo mocarelo in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 15
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-partenopea",
+        "cat": "speciali",
+        "name": {
+          "it": "Partenopea",
+          "en": "Partenopea",
+          "de": "Partenopea",
+          "sl": "Partenopea"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Crema di zucchine (condita), Pomodorini ciliegini, Pancetta croccante, Provola di bufala campana da 125 g al centro della pizza e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Courgette cream (seasoned), Cherry tomatoes, Crispy pancetta, 125 g Campanian buffalo provola in the centre of the pizza and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Zucchinicreme (gewürzt), Kirschtomaten, Knusprige Pancetta, 125 g Büffel-Provola aus Kampanien in der Mitte der Pizza und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, krema iz bučk (začinjena), češnjevi paradižniki, hrustljava panceta, 125 g kampanijske bivolje provole v sredini pice in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 16
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-donciro",
+        "cat": "speciali",
+        "name": {
+          "it": "Don Ciro",
+          "en": "Don Ciro",
+          "de": "Don Ciro",
+          "sl": "Don Ciro"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Crema di friarielli (condita), Salsiccia, Provola di bufala da 125 g al centro della pizza e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Friarielli cream (seasoned), Italian sausage, 125 g buffalo provola in the centre of the pizza and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Friarielli-Creme (gewürzt), Italienische Salsiccia, 125 g Büffel-Provola in der Mitte der Pizza und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, krema iz friariellov (začinjena), italijanska klobasa, 125 g bivolje provole v sredini pice in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 15
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-marci",
+        "cat": "speciali",
+        "name": {
+          "it": "Marci",
+          "en": "Marci",
+          "de": "Marci",
+          "sl": "Marci"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Speck, Funghi champignon, Carciofi, Olive nere e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Speck (smoked ham), Button mushrooms, Artichokes, Black olives and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Speck, Champignons, Artischocken, Schwarze Oliven und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, speck (dimljena šunka), šampinjoni, artičoke, črne olive in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 14.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-mery",
+        "cat": "speciali",
+        "name": {
+          "it": "Mery",
+          "en": "Mery",
+          "de": "Mery",
+          "sl": "Mery"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Salsiccia, Patate fritte* e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Italian sausage, French fries* and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Italienische Salsiccia, Pommes frites* und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, italijanska klobasa, ocvrt krompirček* in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 11
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-fiocco",
+        "cat": "speciali",
+        "name": {
+          "it": "Fiocco",
+          "en": "Fiocco",
+          "de": "Fiocco",
+          "sl": "Fiocco"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Panna, Crocchè*, Prosciutto cotto e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Cream, Potato croquettes*, Cooked ham and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Sahne, Kartoffelkroketten*, Kochschinken und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, smetana, krompirjevi kroketi*, kuhana šunka in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 13
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pz-novella",
+        "cat": "speciali",
+        "name": {
+          "it": "Novella",
+          "en": "Novella",
+          "de": "Novella",
+          "sl": "Novella"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pancetta croccante, Patate novelle fritte*, Funghi champignon e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, Crispy pancetta, Fried new potatoes*, Button mushrooms and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, Knusprige Pancetta, Frittierte neue Kartoffeln*, Champignons und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, hrustljava panceta, ocvrt mladi krompir*, šampinjoni in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 13
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "agg-bufala",
+        "cat": "aggiunte",
+        "name": {
+          "it": "Aggiunte di Bufala e Provola di Bufala",
+          "en": "Aggiunte di Bufala e Provola di Bufala",
+          "de": "Aggiunte di Bufala e Provola di Bufala",
+          "sl": "Aggiunte di Bufala e Provola di Bufala"
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          8
+        ]
+      },
+      {
+        "id": "agg-varie",
+        "cat": "aggiunte",
+        "name": {
+          "it": "Ingredienti Vari Aggiunti",
+          "en": "Ingredienti Vari Aggiunti",
+          "de": "Ingredienti Vari Aggiunti",
+          "sl": "Ingredienti Vari Aggiunti"
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 1.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "fr-classica",
+        "cat": "fritte",
+        "name": {
+          "it": "Pizza Fritta Classica",
+          "en": "Pizza Fritta Classica",
+          "de": "Pizza Fritta Classica",
+          "sl": "Pizza Fritta Classica"
+        },
+        "desc": {
+          "it": "Olio EVO, Fior di latte di Agerola, Pomodoro S. Marzano, Ricotta (condita con sale, olio, pepe e basilico), Cicoli, Pepe e Basilico.",
+          "en": "Extra virgin olive oil, Agerola fior di latte mozzarella, San Marzano tomato, Ricotta (seasoned with salt, oil, pepper and basil), Pork cracklings (cicoli), Pepper and Basil.",
+          "de": "Natives Olivenöl extra, Fior-di-Latte-Mozzarella aus Agerola, San-Marzano-Tomaten, Ricotta (mit Salz, Öl, Pfeffer und Basilikum gewürzt), Schweinegrieben (Cicoli), Pfeffer und Basilikum.",
+          "sl": "Ekstra deviško oljčno olje, mocarela fior di latte iz Agerole, paradižnik San Marzano, rikota (začinjena s soljo, oljem, poprom in baziliko), ocvirki, poper in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 12
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "fr-martina",
+        "cat": "fritte",
+        "name": {
+          "it": "Martina",
+          "en": "Martina",
+          "de": "Martina",
+          "sl": "Martina"
+        },
+        "desc": {
+          "it": "Pizza fritta ripassata al forno, Pomodoro S. Marzano, Fior di latte di Agerola, Formaggio grana e Basilico.",
+          "en": "Fried pizza finished in the oven, San Marzano tomato, Agerola fior di latte mozzarella, Grana cheese and Basil.",
+          "de": "Frittierte Pizza, im Ofen nachgebacken, San-Marzano-Tomaten, Fior-di-Latte-Mozzarella aus Agerola, Grana-Käse und Basilikum.",
+          "sl": "Ocvrta pica, dopečena v peči, paradižnik San Marzano, mocarela fior di latte iz Agerole, sir grana in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 10
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "fr-rafe",
+        "cat": "fritte",
+        "name": {
+          "it": "Rafe'",
+          "en": "Rafe'",
+          "de": "Rafe'",
+          "sl": "Rafe'"
+        },
+        "desc": {
+          "it": "Pizza fritta, Fior di latte di Agerola, Ricotta (condita), Salame Napoli, Prosciutto cotto e Basilico.",
+          "en": "Fried pizza, Agerola fior di latte mozzarella, Ricotta (seasoned), Napoli salami, Cooked ham and Basil.",
+          "de": "Frittierte Pizza, Fior-di-Latte-Mozzarella aus Agerola, Ricotta (gewürzt), Salame Napoli, Kochschinken und Basilikum.",
+          "sl": "Ocvrta pica, mocarela fior di latte iz Agerole, rikota (začinjena), salama Napoli, kuhana šunka in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 11
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "fr-donnapatrizia",
+        "cat": "fritte",
+        "name": {
+          "it": "Donna Patrizia",
+          "en": "Donna Patrizia",
+          "de": "Donna Patrizia",
+          "sl": "Donna Patrizia"
+        },
+        "desc": {
+          "it": "Pizza fritta ripassata al forno, Pomodoro S. Marzano, Prosciutto cotto, Fior di latte di Agerola, Formaggio grana a fine cottura e Basilico.",
+          "en": "Fried pizza finished in the oven, San Marzano tomato, Cooked ham, Agerola fior di latte mozzarella, Grana cheese added after baking and Basil.",
+          "de": "Frittierte Pizza, im Ofen nachgebacken, San-Marzano-Tomaten, Kochschinken, Fior-di-Latte-Mozzarella aus Agerola, Grana-Käse nach dem Backen und Basilikum.",
+          "sl": "Ocvrta pica, dopečena v peči, paradižnik San Marzano, kuhana šunka, mocarela fior di latte iz Agerole, sir grana, dodan po peki in bazilika."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 15
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pa-panuozzo",
+        "cat": "panuozzo",
+        "name": {
+          "it": "Panuozzo",
+          "en": "Panuozzo",
+          "de": "Panuozzo",
+          "sl": "Panuozzo"
+        },
+        "desc": {
+          "it": "Chiedere al personale per le farciture.",
+          "en": "Please ask our staff for the fillings.",
+          "de": "Füllungen bitte beim Personal erfragen.",
+          "sl": "Za nadeve vprašajte osebje."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 9
+          }
+        ],
+        "from": true,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pt-gnocchi",
+        "cat": "primi_terra",
+        "name": {
+          "it": "Gnocchi Sorrento",
+          "en": "Gnocchi Sorrento",
+          "de": "Gnocchi Sorrento",
+          "sl": "Gnocchi Sorrento"
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 12
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pt-carbonara",
+        "cat": "primi_terra",
+        "name": {
+          "it": "Carbonara",
+          "en": "Carbonara",
+          "de": "Carbonara",
+          "sl": "Carbonara"
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 12
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          4,
+          8
+        ]
+      },
+      {
+        "id": "pt-siciliana",
+        "cat": "primi_terra",
+        "name": {
+          "it": "Siciliana",
+          "en": "Siciliana",
+          "de": "Siciliana",
+          "sl": "Siciliana"
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 12
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pt-scarpariello",
+        "cat": "primi_terra",
+        "name": {
+          "it": "Scarpariello",
+          "en": "Scarpariello",
+          "de": "Scarpariello",
+          "sl": "Scarpariello"
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 12
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          8
+        ]
+      },
+      {
+        "id": "pm-gamberoni",
+        "cat": "primi_mare",
+        "name": {
+          "it": "Spaghetti Gamberoni e Cozze",
+          "en": "Spaghetti Gamberoni e Cozze",
+          "de": "Spaghetti Gamberoni e Cozze",
+          "sl": "Spaghetti Gamberoni e Cozze"
+        },
+        "desc": {
+          "it": "",
+          "en": "Spaghetti with king prawns and mussels",
+          "de": "Spaghetti mit Riesengarnelen und Miesmuscheln",
+          "sl": "Špageti z velikimi kozicami in klapavicami"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 20
+          }
+        ],
+        "from": false,
+        "frozen": true,
+        "available": true,
+        "allergens": [
+          1,
+          3,
+          14
+        ]
+      },
+      {
+        "id": "pm-vongole",
+        "cat": "primi_mare",
+        "name": {
+          "it": "Spaghetti alle Vongole",
+          "en": "Spaghetti alle Vongole",
+          "de": "Spaghetti alle Vongole",
+          "sl": "Spaghetti alle Vongole"
+        },
+        "desc": {
+          "it": "",
+          "en": "Spaghetti with clams",
+          "de": "Spaghetti mit Venusmuscheln",
+          "sl": "Špageti s školjkami vongole"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 16
+          }
+        ],
+        "from": false,
+        "frozen": true,
+        "available": true,
+        "allergens": [
+          1,
+          14
+        ]
+      },
+      {
+        "id": "pm-cozze",
+        "cat": "primi_mare",
+        "name": {
+          "it": "Spaghetti alle Cozze",
+          "en": "Spaghetti alle Cozze",
+          "de": "Spaghetti alle Cozze",
+          "sl": "Spaghetti alle Cozze"
+        },
+        "desc": {
+          "it": "",
+          "en": "Spaghetti with mussels",
+          "de": "Spaghetti mit Miesmuscheln",
+          "sl": "Špageti s klapavicami"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 15
+          }
+        ],
+        "from": false,
+        "frozen": true,
+        "available": true,
+        "allergens": [
+          1,
+          14
+        ]
+      },
+      {
+        "id": "pm-scoglio",
+        "cat": "primi_mare",
+        "name": {
+          "it": "Spaghetti allo Scoglio",
+          "en": "Spaghetti allo Scoglio",
+          "de": "Spaghetti allo Scoglio",
+          "sl": "Spaghetti allo Scoglio"
+        },
+        "desc": {
+          "it": "",
+          "en": "Spaghetti with mixed seafood",
+          "de": "Spaghetti mit Meeresfrüchten",
+          "sl": "Špageti z morskimi sadeži"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 22
+          }
+        ],
+        "from": false,
+        "frozen": true,
+        "available": true,
+        "allergens": [
+          1,
+          3,
+          5,
+          14
+        ]
+      },
+      {
+        "id": "st-bistecca",
+        "cat": "secondi_terra",
+        "name": {
+          "it": "Bistecca ai Ferri",
+          "en": "Bistecca ai Ferri",
+          "de": "Bistecca ai Ferri",
+          "sl": "Bistecca ai Ferri"
+        },
+        "desc": {
+          "it": "Lonza.",
+          "en": "Pork loin.",
+          "de": "Schweinekarree.",
+          "sl": "Svinjski kare."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 12
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "st-cotoletta",
+        "cat": "secondi_terra",
+        "name": {
+          "it": "Cotoletta alla Milanese",
+          "en": "Cotoletta alla Milanese",
+          "de": "Cotoletta alla Milanese",
+          "sl": "Cotoletta alla Milanese"
+        },
+        "desc": {
+          "it": "",
+          "en": "Breaded cutlet, Milanese style",
+          "de": "Paniertes Kotelett nach Mailänder Art",
+          "sl": "Panirani zrezek po milansko"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 12
+          }
+        ],
+        "from": false,
+        "frozen": true,
+        "available": true,
+        "allergens": [
+          1,
+          4
+        ]
+      },
+      {
+        "id": "st-caprese",
+        "cat": "secondi_terra",
+        "name": {
+          "it": "Caprese",
+          "en": "Caprese",
+          "de": "Caprese",
+          "sl": "Caprese"
+        },
+        "desc": {
+          "it": "Con bufala.",
+          "en": "With buffalo mozzarella.",
+          "de": "Mit Büffelmozzarella.",
+          "sl": "Z bivoljo mocarelo."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 15
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          8
+        ]
+      },
+      {
+        "id": "sm-calamarifritti",
+        "cat": "secondi_mare",
+        "name": {
+          "it": "Calamari Fritti",
+          "en": "Calamari Fritti",
+          "de": "Calamari Fritti",
+          "sl": "Calamari Fritti"
+        },
+        "desc": {
+          "it": "",
+          "en": "Fried squid",
+          "de": "Frittierte Calamari",
+          "sl": "Ocvrti lignji"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 16
+          }
+        ],
+        "from": false,
+        "frozen": true,
+        "available": true,
+        "allergens": [
+          1,
+          14
+        ]
+      },
+      {
+        "id": "sm-calamaro",
+        "cat": "secondi_mare",
+        "name": {
+          "it": "Calamaro alla Griglia",
+          "en": "Calamaro alla Griglia",
+          "de": "Calamaro alla Griglia",
+          "sl": "Calamaro alla Griglia"
+        },
+        "desc": {
+          "it": "",
+          "en": "Grilled squid",
+          "de": "Gegrillter Tintenfisch",
+          "sl": "Lignji na žaru"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 16
+          }
+        ],
+        "from": false,
+        "frozen": true,
+        "available": true,
+        "allergens": [
+          14
+        ]
+      },
+      {
+        "id": "sm-gamberoni",
+        "cat": "secondi_mare",
+        "name": {
+          "it": "Gamberoni alla Griglia 5pz",
+          "en": "Gamberoni alla Griglia 5pz",
+          "de": "Gamberoni alla Griglia 5pz",
+          "sl": "Gamberoni alla Griglia 5pz"
+        },
+        "desc": {
+          "it": "",
+          "en": "Grilled king prawns (5 pieces)",
+          "de": "Gegrillte Riesengarnelen (5 Stück)",
+          "sl": "Velike kozice na žaru (5 kosov)"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 18
+          }
+        ],
+        "from": false,
+        "frozen": true,
+        "available": true,
+        "allergens": [
+          3
+        ]
+      },
+      {
+        "id": "sm-spada",
+        "cat": "secondi_mare",
+        "name": {
+          "it": "Spada e Gamberoni",
+          "en": "Spada e Gamberoni",
+          "de": "Spada e Gamberoni",
+          "sl": "Spada e Gamberoni"
+        },
+        "desc": {
+          "it": "",
+          "en": "Swordfish and king prawns",
+          "de": "Schwertfisch und Riesengarnelen",
+          "sl": "Mečarica in velike kozice"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 22
+          }
+        ],
+        "from": false,
+        "frozen": true,
+        "available": true,
+        "allergens": [
+          3,
+          5
+        ]
+      },
+      {
+        "id": "co-verde",
+        "cat": "contorni",
+        "name": {
+          "it": "Insalata Verde",
+          "en": "Insalata Verde",
+          "de": "Insalata Verde",
+          "sl": "Insalata Verde"
+        },
+        "desc": {
+          "it": "",
+          "en": "Green salad",
+          "de": "Grüner Salat",
+          "sl": "Zelena solata"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 4
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "co-grigliate",
+        "cat": "contorni",
+        "name": {
+          "it": "Verdure Grigliate",
+          "en": "Verdure Grigliate",
+          "de": "Verdure Grigliate",
+          "sl": "Verdure Grigliate"
+        },
+        "desc": {
+          "it": "",
+          "en": "Grilled vegetables",
+          "de": "Gegrilltes Gemüse",
+          "sl": "Zelenjava na žaru"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "co-mista",
+        "cat": "contorni",
+        "name": {
+          "it": "Insalata Mista",
+          "en": "Insalata Mista",
+          "de": "Insalata Mista",
+          "sl": "Insalata Mista"
+        },
+        "desc": {
+          "it": "",
+          "en": "Mixed salad",
+          "de": "Gemischter Salat",
+          "sl": "Mešana solata"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 6
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "co-patate",
+        "cat": "contorni",
+        "name": {
+          "it": "Patate Fritte",
+          "en": "Patate Fritte",
+          "de": "Patate Fritte",
+          "sl": "Patate Fritte"
+        },
+        "desc": {
+          "it": "",
+          "en": "French fries",
+          "de": "Pommes frites",
+          "sl": "Ocvrt krompirček"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 5
+          }
+        ],
+        "from": false,
+        "frozen": true,
+        "available": true,
+        "allergens": [
+          1
+        ]
+      },
+      {
+        "id": "bi-acqua",
+        "cat": "bibite",
+        "name": {
+          "it": "Acqua S. Benedetto",
+          "en": "Acqua S. Benedetto",
+          "de": "Acqua S. Benedetto",
+          "sl": "Acqua S. Benedetto"
+        },
+        "desc": {
+          "it": "",
+          "en": "Mineral water",
+          "de": "Mineralwasser",
+          "sl": "Mineralna voda"
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 3
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "bi-vetro",
+        "cat": "bibite",
+        "name": {
+          "it": "Bibita in Vetro",
+          "en": "Bibita in Vetro",
+          "de": "Bibita in Vetro",
+          "sl": "Bibita in Vetro"
+        },
+        "desc": {
+          "it": "Coca-Cola, Coca-Cola 0, Fanta, tè freddo e Sprite.",
+          "en": "Coca-Cola, Coca-Cola 0, Fanta, iced tea and Sprite (glass bottle).",
+          "de": "Coca-Cola, Coca-Cola 0, Fanta, Eistee und Sprite (Glasflasche).",
+          "sl": "Coca-Cola, Coca-Cola 0, Fanta, ledeni čaj in Sprite (v steklenici)."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 3.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "bi-birrabott",
+        "cat": "bibite",
+        "name": {
+          "it": "Birra in Bottiglia",
+          "en": "Birra in Bottiglia",
+          "de": "Birra in Bottiglia",
+          "sl": "Birra in Bottiglia"
+        },
+        "desc": {
+          "it": "Chiedere al personale.",
+          "en": "Please ask our staff which beers we have.",
+          "de": "Bitte beim Personal nach der Auswahl fragen.",
+          "sl": "Za izbiro vprašajte osebje."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 4
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1
+        ]
+      },
+      {
+        "id": "bi-poretti",
+        "cat": "birre",
+        "name": {
+          "it": "Birra Poretti",
+          "en": "Birra Poretti",
+          "de": "Birra Poretti",
+          "sl": "Birra Poretti"
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": {
+              "it": "0,40 l",
+              "en": "0,40 l",
+              "de": "0,40 l",
+              "sl": "0,40 l"
+            },
+            "value": 5
+          },
+          {
+            "label": {
+              "it": "0,20 l",
+              "en": "0,20 l",
+              "de": "0,20 l",
+              "sl": "0,20 l"
+            },
+            "value": 3.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "bi-poretti-nf",
+        "cat": "birre",
+        "name": {
+          "it": "Birra Poretti Non Filtrata",
+          "en": "Birra Poretti Non Filtrata",
+          "de": "Birra Poretti Non Filtrata",
+          "sl": "Birra Poretti Non Filtrata"
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": {
+              "it": "0,40 l",
+              "en": "0,40 l",
+              "de": "0,40 l",
+              "sl": "0,40 l"
+            },
+            "value": 6
+          },
+          {
+            "label": {
+              "it": "0,20 l",
+              "en": "0,20 l",
+              "de": "0,20 l",
+              "sl": "0,20 l"
+            },
+            "value": 3.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "vi-bianco",
+        "cat": "vini",
+        "name": {
+          "it": "Vino Bianco",
+          "en": "Vino Bianco",
+          "de": "Vino Bianco",
+          "sl": "Vino Bianco"
+        },
+        "desc": {
+          "it": "Vino della casa: Scolaris, San Lorenzo Isontino.",
+          "en": "House wine: Scolaris, San Lorenzo Isontino.",
+          "de": "Hauswein: Scolaris, San Lorenzo Isontino.",
+          "sl": "Hišno vino: Scolaris, San Lorenzo Isontino."
+        },
+        "prices": [
+          {
+            "label": {
+              "it": "Calice",
+              "en": "Glass",
+              "de": "Glas",
+              "sl": "Kozarec"
+            },
+            "value": 3
+          },
+          {
+            "label": {
+              "it": "Mezzo litro",
+              "en": "Half litre",
+              "de": "Halber Liter",
+              "sl": "Pol litra"
+            },
+            "value": 6.5
+          },
+          {
+            "label": {
+              "it": "Un litro",
+              "en": "One litre",
+              "de": "Ein Liter",
+              "sl": "Liter"
+            },
+            "value": 13
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "vi-rosso",
+        "cat": "vini",
+        "name": {
+          "it": "Vino Rosso",
+          "en": "Vino Rosso",
+          "de": "Vino Rosso",
+          "sl": "Vino Rosso"
+        },
+        "desc": {
+          "it": "Vino della casa: Scolaris, San Lorenzo Isontino.",
+          "en": "House wine: Scolaris, San Lorenzo Isontino.",
+          "de": "Hauswein: Scolaris, San Lorenzo Isontino.",
+          "sl": "Hišno vino: Scolaris, San Lorenzo Isontino."
+        },
+        "prices": [
+          {
+            "label": {
+              "it": "Calice",
+              "en": "Glass",
+              "de": "Glas",
+              "sl": "Kozarec"
+            },
+            "value": 3
+          },
+          {
+            "label": {
+              "it": "Mezzo litro",
+              "en": "Half litre",
+              "de": "Halber Liter",
+              "sl": "Pol litra"
+            },
+            "value": 6.5
+          },
+          {
+            "label": {
+              "it": "Un litro",
+              "en": "One litre",
+              "de": "Ein Liter",
+              "sl": "Liter"
+            },
+            "value": 13
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "vi-bottiglia",
+        "cat": "vini",
+        "name": {
+          "it": "Vino in Bottiglia",
+          "en": "Vino in Bottiglia",
+          "de": "Vino in Bottiglia",
+          "sl": "Vino in Bottiglia"
+        },
+        "desc": {
+          "it": "Chiedere al personale.",
+          "en": "Please ask our staff.",
+          "de": "Bitte beim Personal erfragen.",
+          "sl": "Vprašajte osebje."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 15
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "vi-prosecco",
+        "cat": "vini",
+        "name": {
+          "it": "Prosecco Extra Dry",
+          "en": "Prosecco Extra Dry",
+          "de": "Prosecco Extra Dry",
+          "sl": "Prosecco Extra Dry"
+        },
+        "desc": {
+          "it": "Chiedere al personale.",
+          "en": "Please ask our staff.",
+          "de": "Bitte beim Personal erfragen.",
+          "sl": "Vprašajte osebje."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 17
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "ca-caffe",
+        "cat": "caffetteria",
+        "name": {
+          "it": "Caffè",
+          "en": "Caffè",
+          "de": "Caffè",
+          "sl": "Caffè"
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 1.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "ca-deca",
+        "cat": "caffetteria",
+        "name": {
+          "it": "Caffè Deca",
+          "en": "Caffè Deca",
+          "de": "Caffè Deca",
+          "sl": "Caffè Deca"
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 1.7
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "ca-cappuccino",
+        "cat": "caffetteria",
+        "name": {
+          "it": "Cappuccino",
+          "en": "Cappuccino",
+          "de": "Cappuccino",
+          "sl": "Cappuccino"
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 2.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "do-dolci",
+        "cat": "dolci",
+        "name": {
+          "it": "Dolci",
+          "en": "Dolci",
+          "de": "Dolci",
+          "sl": "Dolci"
+        },
+        "desc": {
+          "it": "Chiedere al personale (anche per gli allergeni).",
+          "en": "Please ask our staff (also about allergens).",
+          "de": "Bitte beim Personal erfragen (auch zu Allergenen).",
+          "sl": "Vprašajte osebje (tudi glede alergenov)."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 5
+          }
+        ],
+        "from": true,
+        "frozen": true,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "do-sorbetto",
+        "cat": "dolci",
+        "name": {
+          "it": "Sorbetto",
+          "en": "Sorbetto",
+          "de": "Sorbetto",
+          "sl": "Sorbetto"
+        },
+        "desc": {
+          "it": "Chiedere al personale per il gusto.",
+          "en": "Please ask our staff for the flavour.",
+          "de": "Geschmacksrichtungen bitte beim Personal erfragen.",
+          "sl": "Za okus vprašajte osebje."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 4
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": [
+          1,
+          2,
+          4,
+          7,
+          8,
+          12
+        ]
+      },
+      {
+        "id": "di-liquori",
+        "cat": "digestivi",
+        "name": {
+          "it": "Liquori",
+          "en": "Liquori",
+          "de": "Liquori",
+          "sl": "Liquori"
+        },
+        "desc": {
+          "it": "Chiedere al personale.",
+          "en": "Please ask our staff.",
+          "de": "Bitte beim Personal erfragen.",
+          "sl": "Vprašajte osebje."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 2.5
+          }
+        ],
+        "from": true,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "di-amari",
+        "cat": "digestivi",
+        "name": {
+          "it": "Amari",
+          "en": "Amari",
+          "de": "Amari",
+          "sl": "Amari"
+        },
+        "desc": {
+          "it": "Chiedere al personale.",
+          "en": "Please ask our staff.",
+          "de": "Bitte beim Personal erfragen.",
+          "sl": "Vprašajte osebje."
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 3.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      }
+    ]
+  },
+  "settings": {
+    "phone": "+39 331 717 7998",
+    "whatsapp": "",
+    "email": "",
+    "address": "Piazza della Repubblica 21, Monfalcone (GO)",
+    "mapUrl": "",
+    "hours": {
+      "it": "Lunedì: chiuso\nMartedì – domenica: 18:30 – 24:00",
+      "en": "Monday: closed\nTuesday – Sunday: 6:30 pm – midnight",
+      "de": "Montag: Ruhetag\nDienstag – Sonntag: 18:30 – 24:00 Uhr",
+      "sl": "Ponedeljek: zaprto\nTorek – nedelja: 18.30 – 24.00"
+    },
+    "coperto": 2.5,
+    "maxGuests": 20
+  }
+}

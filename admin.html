@@ -13,10 +13,12 @@
 </head>
 
 <!--
-  AREA GESTIONALE — dati salvati in localStorage (solo in questo browser).
+  AREA GESTIONALE — lavora su una copia nel browser (localStorage) e, se collegata con un token GitHub,
+  pubblica menù e impostazioni nel file data.json del repository: è quello che legge il menù dei clienti.
+  Le prenotazioni restano solo in questo browser.
   PIN predefinito: 1234  (cambialo subito da Impostazioni).
-  Il PIN è controllato nel browser: serve a tenere lontani i curiosi,
-  NON è una vera protezione. Per un uso reale serve un login lato server.
+  Il PIN è controllato nel browser: serve solo a tenere lontani i curiosi. La vera chiave
+  per modificare il sito è il token GitHub, che sta solo sul dispositivo del titolare.
 -->
 <body data-page="admin">
 
@@ -69,6 +71,7 @@
 
       <!-- ---------- PRENOTAZIONI ---------- -->
       <section id="tab-bookings" role="tabpanel">
+        <p class="hint">Le prenotazioni, comprese quelle inserite a mano, restano solo su questo browser: non vengono pubblicate online.</p>
         <div class="stats">
           <div class="stat"><b id="st-today">0</b><span>Oggi</span></div>
           <div class="stat"><b id="st-pending">0</b><span>Da confermare</span></div>
@@ -149,6 +152,35 @@
           <div class="card-actions"><button class="btn btn--primary" type="submit">Salva impostazioni</button></div>
         </form>
 
+        <div class="card" id="pub-card">
+          <h3>Pubblicazione online</h3>
+          <p id="pub-status"></p>
+          <div id="pub-connect">
+            <div class="field">
+              <label for="gh-token">Token GitHub</label>
+              <input class="input" id="gh-token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
+            </div>
+            <p class="form-error" id="gh-err" role="alert" hidden></p>
+            <div class="card-actions"><button class="btn btn--primary" type="button" id="gh-connect">Collega</button></div>
+            <details class="how">
+              <summary>Come creo il token (si fa una volta sola)</summary>
+              <ol>
+                <li>Apri <a href="https://github.com/settings/personal-access-tokens/new?name=Da+Marinelli+menu&amp;description=Pubblica+il+menu+dall%27area+gestionale&amp;target_name=Menugestionale2026&amp;expires_in=365&amp;contents=write" target="_blank" rel="noopener">Crea token su GitHub</a> (accedi con l’account del locale). Nome e permessi sono già compilati.</li>
+                <li>In «Repository access» scegli <b>Only select repositories</b> e seleziona <b>da-marinelli</b>.</li>
+                <li>Premi <b>Generate token</b>, copia il codice che inizia con <code>github_pat_</code> e incollalo qui sopra.</li>
+              </ol>
+              <p class="hint">Il token resta solo su questo dispositivo e permette di modificare soltanto quel repository. Se lo perdi o scade, ne crei un altro.</p>
+            </details>
+          </div>
+          <div id="pub-connected" hidden>
+            <div class="card-actions">
+              <button class="btn btn--primary" type="button" id="pub-now">Pubblica ora</button>
+              <button class="btn btn--outline" type="button" id="pub-pull">Ricarica da online</button>
+              <button class="btn btn--outline" type="button" id="gh-disconnect">Scollega</button>
+            </div>
+          </div>
+        </div>
+
         <form class="card" id="pin-form" novalidate>
           <h3>Cambia PIN</h3>
           <p>Da 4 a 8 cifre.</p>
@@ -163,7 +195,7 @@
 
         <div class="card">
           <h3>Copia di sicurezza</h3>
-          <p>Menù, prenotazioni e impostazioni vivono solo in questo browser. Scarica una copia ogni tanto: puoi ripristinarla qui o su un altro dispositivo.</p>
+          <p>Menù e impostazioni si pubblicano online (se sei collegato); le prenotazioni restano solo in questo browser. Scarica una copia ogni tanto: puoi ripristinarla qui o su un altro dispositivo.</p>
           <div class="card-actions">
             <button class="btn btn--outline" type="button" id="export">Scarica copia (JSON)</button>
             <button class="btn btn--outline" type="button" id="import-btn">Ripristina da file</button>
@@ -390,6 +422,8 @@
       let tab = 'bookings';
       try { tab = sessionStorage.getItem(TAB_KEY) || 'bookings'; } catch (e) { /* ignora */ }
       selectTab(tab);
+      renderPubCard();
+      C.syncFromRemote().then(refreshAll);
     }
 
     /* =================================================================
@@ -405,21 +439,103 @@
     }
     $$('.adm-tab').forEach((b) => b.addEventListener('click', () => selectTab(b.getAttribute('data-tab'))));
 
+    function publishNotice(ps) {
+      const btn = (act, label) => '<button class="btn btn--sm btn--outline" type="button" data-pub="' + act + '">' + label + '</button>';
+      switch (ps.kind) {
+        case 'local':
+          return '<div class="notice notice--warn"><span>Non sei collegato a GitHub: le modifiche restano solo su questo browser e i clienti non le vedono.</span><button class="btn btn--sm btn--outline" type="button" data-goto="settings">Collega</button></div>';
+        case 'pending':
+          return '<div class="notice notice--info"><span>Modifiche da pubblicare…</span></div>';
+        case 'saving':
+          return '<div class="notice notice--info"><span>Pubblicazione in corso…</span></div>';
+        case 'ok': {
+          const d = new Date(ps.at);
+          const hh = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+          return '<div class="notice notice--ok"><span>Pubblicato alle ' + hh + '. I clienti lo vedono entro uno o due minuti.</span></div>';
+        }
+        case 'error':
+          return '<div class="notice notice--warn"><span>Non pubblicato. ' + esc(ps.msg) + '</span>' + btn('retry', 'Riprova') + '</div>';
+        case 'conflict':
+          return '<div class="notice notice--warn"><span>Online c’è una versione più recente, pubblicata da un altro dispositivo. Quale tieni?</span>' + btn('remote', 'Quella online') + btn('mine', 'La mia') + '</div>';
+        default:
+          return '<div class="notice notice--ok"><span>Collegato: le modifiche a menù e impostazioni si pubblicano in automatico.</span></div>';
+      }
+    }
+
     function renderNotices() {
       const s = C.getSettings();
       const out = [];
       if (C.isDefaultPin()) {
         out.push('<div class="notice notice--warn"><span>Stai usando il PIN predefinito (1234). Cambialo ora.</span><button class="btn btn--sm btn--outline" type="button" data-goto="settings">Cambia PIN</button></div>');
       }
-      if (s.phone === C.DEFAULT_SETTINGS.phone || s.address === C.DEFAULT_SETTINGS.address) {
-        out.push('<div class="notice notice--warn"><span>Telefono, indirizzo e orari sono ancora segnaposto: completali prima di pubblicare.</span><button class="btn btn--sm btn--outline" type="button" data-goto="settings">Completa</button></div>');
+      if (!s.phone || !s.address) {
+        out.push('<div class="notice notice--warn"><span>Mancano telefono o indirizzo: completali nelle Impostazioni.</span><button class="btn btn--sm btn--outline" type="button" data-goto="settings">Completa</button></div>');
       }
-      out.push('<div class="notice notice--info"><span>I dati sono salvati solo in questo browser. Le modifiche non arrivano ai telefoni dei clienti finché il sito non usa un database online.</span></div>');
+      out.push(publishNotice(C.getPublishState()));
       $('#notices').innerHTML = out.join('');
     }
-    $('#notices').addEventListener('click', (e) => {
+    $('#notices').addEventListener('click', async (e) => {
       const g = e.target.closest('[data-goto]');
-      if (g) selectTab(g.getAttribute('data-goto'));
+      if (g) return selectTab(g.getAttribute('data-goto'));
+      const p = e.target.closest('[data-pub]');
+      if (!p) return;
+      const act = p.getAttribute('data-pub');
+      if (act === 'retry') return C.publishNow();
+      if (act === 'remote') {
+        if (!(await confirmBox('Usare la versione online? Le modifiche fatte su questo dispositivo dopo l’ultima sincronizzazione andranno perse.', 'Usa quella online', true))) return;
+        try { await C.useRemote(); refreshAll(); toast('Caricata la versione online'); } catch (err) { toast(err.message || 'Non riesco a leggere i dati online.', true); }
+      }
+      if (act === 'mine') {
+        if (!(await confirmBox('Pubblicare la tua versione? Sostituirà quella online, modificata da un altro dispositivo.', 'Pubblica la mia', true))) return;
+        C.publishNow({ force: true });
+      }
+    });
+
+    /* ---------- pubblicazione online (scheda Impostazioni) ---------- */
+    function renderPubCard() {
+      const on = !!C.getToken();
+      $('#pub-connect').hidden = on;
+      $('#pub-connected').hidden = !on;
+      $('#pub-status').textContent = on
+        ? 'Collegato a GitHub (' + C.PUBLISH.repo + '). Ogni modifica a piatti, prezzi, orari e contatti viene pubblicata in automatico.'
+        : 'Non collegato: finché non incolli il token, le modifiche restano solo in questo browser e i clienti non le vedono.';
+    }
+    function refreshAll() {
+      renderNotices();
+      renderPubCard();
+      renderMenuList();
+      if (!$('#tab-settings').hidden) fillSettings();
+    }
+    C.onPublishState(() => { renderNotices(); renderPubCard(); });
+    window.addEventListener('online', () => { if (C.getPublishState().kind === 'error' && C.getToken()) C.publishNow(); });
+
+    $('#gh-connect').addEventListener('click', async () => {
+      const tok = $('#gh-token').value.trim();
+      if (!tok) return showErr('#gh-err', 'Incolla qui il token che hai copiato da GitHub.');
+      const btn = $('#gh-connect');
+      btn.disabled = true; btn.textContent = 'Collego…';
+      try {
+        const r = await C.connect(tok);
+        $('#gh-token').value = '';
+        $('#gh-err').hidden = true;
+        refreshAll();
+        toast(r === 'adopted' ? 'Collegato: caricati i dati online' : 'Collegato a GitHub');
+      } catch (err) {
+        showErr('#gh-err', err.message || 'Collegamento non riuscito.');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Collega';
+      }
+    });
+    $('#pub-now').addEventListener('click', () => C.publishNow());
+    $('#pub-pull').addEventListener('click', async () => {
+      if (C.unpublished() && !(await confirmBox('Ci sono modifiche non ancora pubblicate: caricando i dati online andranno perse. Continuare?', 'Ricarica', true))) return;
+      try { await C.useRemote(); refreshAll(); toast('Dati online caricati'); } catch (err) { toast(err.message || 'Non riesco a leggere i dati online.', true); }
+    });
+    $('#gh-disconnect').addEventListener('click', async () => {
+      if (!(await confirmBox('Scollegare GitHub da questo dispositivo? Le modifiche non verranno più pubblicate finché non incolli di nuovo un token.', 'Scollega', true))) return;
+      C.disconnect();
+      refreshAll();
+      toast('Scollegato');
     });
 
     /* =================================================================
@@ -874,7 +990,7 @@
         let data;
         try { data = JSON.parse(reader.result); } catch (err) { return toast('File non valido.', true); }
         if (!data || data.app !== 'da-marinelli' || !Array.isArray(data.menu) || !Array.isArray(data.bookings)) return toast('Questo file non è una copia di Da Marinelli.', true);
-        if (!(await confirmBox('Sostituire menù, prenotazioni e impostazioni attuali con quelli del file?', 'Ripristina', true))) return;
+        if (!(await confirmBox('Sostituire menù, prenotazioni e impostazioni attuali con quelli del file? Se sei collegato, menù e impostazioni cambiano anche sul sito dei clienti.', 'Ripristina', true))) return;
         C.saveMenu(data.menu);
         C.saveBookings(data.bookings);
         if (data.settings) {
@@ -889,7 +1005,7 @@
     });
 
     $('#menu-reset').addEventListener('click', async () => {
-      if (await confirmBox('Ripristinare il menù originale? Perderai le modifiche ai piatti (le prenotazioni restano).', 'Ripristina', true)) {
+      if (await confirmBox('Ripristinare il menù originale? Perderai le modifiche ai piatti, anche sul sito dei clienti se sei collegato (le prenotazioni restano).', 'Ripristina', true)) {
         C.resetMenu();
         renderMenuList();
         toast('Menù originale ripristinato');
