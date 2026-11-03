@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": 1793724554357,
+  "updatedAt": 1793725242771,
   "menu": {
     "items": [
       {
@@ -2217,6 +2217,32 @@
           {
             "label": null,
             "value": 3.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
+      },
+      {
+        "id": "mw0xp38220bmm",
+        "cat": "antipasti",
+        "name": {
+          "it": "Cuppo di pesce",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": null,
+            "value": 15
           }
         ],
         "from": false,
