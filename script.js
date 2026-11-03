@@ -143,7 +143,7 @@
       okText: 'Abbiamo registrato la tua richiesta: il locale ti contatterà per confermare.',
       okWa: 'Invia anche su WhatsApp',
       okAgain: 'Nuova richiesta',
-      bookingsOff: 'Le prenotazioni online non sono al momento attive. Chiamaci per prenotare.',
+      bookingsOff: 'Per prenotare un tavolo contattaci direttamente.',
       infoTitle: 'Contatti e orari',
       address: 'Indirizzo',
       phone: 'Telefono',
@@ -196,7 +196,7 @@
       okText: 'We have received your request: the restaurant will contact you to confirm.',
       okWa: 'Also send via WhatsApp',
       okAgain: 'New request',
-      bookingsOff: 'Online booking is not available at the moment. Please call us to book.',
+      bookingsOff: 'To book a table, please contact us directly.',
       infoTitle: 'Contact and opening hours',
       address: 'Address',
       phone: 'Phone',
@@ -249,7 +249,7 @@
       okText: 'Wir haben Ihre Anfrage erhalten: Das Lokal meldet sich zur Bestätigung bei Ihnen.',
       okWa: 'Zusätzlich per WhatsApp senden',
       okAgain: 'Neue Anfrage',
-      bookingsOff: 'Online-Reservierungen sind derzeit nicht aktiv. Bitte rufen Sie uns an.',
+      bookingsOff: 'Um einen Tisch zu reservieren, kontaktieren Sie uns bitte direkt.',
       infoTitle: 'Kontakt und Öffnungszeiten',
       address: 'Adresse',
       phone: 'Telefon',
@@ -306,7 +306,7 @@
     okText: 'Vašo zahtevo smo prejeli, lokal se vam bo oglasil za potrditev.',
     okWa: 'Pošlji tudi prek WhatsAppa',
     okAgain: 'Nova zahteva',
-    bookingsOff: 'Spletne rezervacije trenutno niso na voljo. Za rezervacijo nas pokličite.',
+    bookingsOff: 'Za rezervacijo mize nas kontaktirajte neposredno.',
     infoTitle: 'Kontakt in delovni čas',
     address: 'Naslov',
     phone: 'Telefon',
@@ -789,6 +789,12 @@
   /* ===================================================================
      5. ACCESSO AI DATI
      =================================================================== */
+  // INTERRUTTORE GENERALE delle prenotazioni online.
+  // Lascialo false finché il sito non usa un database online: senza, le richieste inviate dai clienti
+  // restano nel loro telefono e al locale non arrivano. Con false il menù mostra solo Chiama / WhatsApp.
+  const ONLINE_BOOKINGS = false;
+  const bookingsOpen = (settings) => ONLINE_BOOKINGS && settings.bookingsEnabled !== false;
+
   const DEFAULT_PIN = '1234';
   const DEFAULT_SETTINGS = {
     phone: '+39 000 000 0000',
@@ -906,7 +912,7 @@
 
   window.MarinelliCore = {
     LANGS, LOCALES, KEYS, UI, ALLERGENS, CATEGORIES, GROUPS, CAT_ORDER, SEED,
-    DEFAULT_SETTINGS, DEFAULT_PIN,
+    DEFAULT_SETTINGS, DEFAULT_PIN, ONLINE_BOOKINGS, bookingsOpen,
     T, N, esc, tr, t, fmt, uid, clone, todayISO, formatPrice, hashPin, waNumber, allergen,
     getMenu, saveMenu, resetMenu, defaultMenu,
     getBookings, saveBookings,
@@ -1094,13 +1100,19 @@
 
       const callOff = $('#book-off-call');
       if (callOff) callOff.setAttribute('href', telHref);
+      const waOff = $('#book-off-wa');
+      if (waOff) {
+        waOff.hidden = !wa;
+        if (wa) waOff.setAttribute('href', 'https://wa.me/' + wa);
+      }
     }
 
     /* ---------- prenotazione ---------- */
     const form = $('#book-form');
     function renderBookingMode() {
-      const on = state.settings.bookingsEnabled !== false;
+      const on = bookingsOpen(state.settings);
       form.hidden = !on || !$('#book-ok').hidden;
+      $('#book-sub').hidden = !on;
       $('#book-off').hidden = on;
       $('#b-guests').max = state.settings.maxGuests;
     }
@@ -1113,6 +1125,7 @@
 
     form.addEventListener('submit', (ev) => {
       ev.preventDefault();
+      if (!bookingsOpen(state.settings)) return; // prenotazioni online spente
       $('#b-error').hidden = true;
       const name = $('#b-name').value.trim();
       const phone = $('#b-phone').value.trim();

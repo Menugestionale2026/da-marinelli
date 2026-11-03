@@ -143,6 +143,7 @@
             <div class="field"><label for="s-coperto">Coperto (€)</label><input class="input" id="s-coperto" inputmode="decimal"></div>
             <div class="field"><label for="s-maxguests">Persone massime per richiesta online</label><input class="input" id="s-maxguests" type="number" min="1" max="99" inputmode="numeric"></div>
             <label class="check span-2"><input type="checkbox" id="s-bookings"> Accetta richieste di prenotazione dal menù online</label>
+            <p class="hint span-2" id="s-bookings-hint" hidden>Spento per tutti i clienti: finché il sito non ha un database online, le richieste inviate resterebbero nel loro telefono e non arriverebbero qui. Le prenotazioni telefoniche puoi comunque inserirle a mano nella scheda Prenotazioni.</p>
           </div>
           <p class="form-error" id="set-err" role="alert" hidden></p>
           <div class="card-actions"><button class="btn btn--primary" type="submit">Salva impostazioni</button></div>
@@ -811,7 +812,9 @@
       $('#s-hours-sl').value = s.hours.sl;
       $('#s-coperto').value = String(s.coperto).replace('.', ',');
       $('#s-maxguests').value = s.maxGuests;
-      $('#s-bookings').checked = s.bookingsEnabled !== false;
+      $('#s-bookings').checked = C.ONLINE_BOOKINGS && s.bookingsEnabled !== false;
+      $('#s-bookings').disabled = !C.ONLINE_BOOKINGS;
+      $('#s-bookings-hint').hidden = C.ONLINE_BOOKINGS;
       $('#set-err').hidden = true;
       $('#pin-err').hidden = true;
     }
@@ -832,7 +835,7 @@
         hours: { it: $('#s-hours-it').value.trim(), en: $('#s-hours-en').value.trim(), de: $('#s-hours-de').value.trim(), sl: $('#s-hours-sl').value.trim() },
         coperto: cop,
         maxGuests: max,
-        bookingsEnabled: $('#s-bookings').checked
+        bookingsEnabled: C.ONLINE_BOOKINGS ? $('#s-bookings').checked : s.bookingsEnabled
       });
       C.saveSettings(s);
       $('#set-err').hidden = true;

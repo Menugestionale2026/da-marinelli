@@ -83,7 +83,7 @@
     <section class="container section" id="prenota" aria-labelledby="book-title">
       <div class="panel">
         <h2 class="group-title" id="book-title" data-i18n="bookTitle">Prenota un tavolo</h2>
-        <p class="muted" data-i18n="bookSub"></p>
+        <p class="muted" id="book-sub" data-i18n="bookSub"></p>
 
         <form id="book-form" novalidate>
           <div class="form-grid">
@@ -124,10 +124,13 @@
           <button type="button" class="btn btn--outline" id="book-again" data-i18n="okAgain">Nuova richiesta</button>
         </div>
 
-        <!-- Prenotazioni online disattivate dall'area riservata -->
+        <!-- Prenotazioni online spente (ONLINE_BOOKINGS in script.js): al loro posto Chiama e WhatsApp -->
         <div id="book-off" hidden>
           <p data-i18n="bookingsOff"></p>
-          <a class="btn btn--primary" id="book-off-call" href="#" data-i18n="call">Chiama</a>
+          <div class="actions">
+            <a class="btn btn--primary" id="book-off-call" href="#" data-i18n="call">Chiama</a>
+            <a class="btn btn--outline" id="book-off-wa" href="#" target="_blank" rel="noopener" hidden>WhatsApp</a>
+          </div>
         </div>
       </div>
     </section>
