@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": 1793729511425,
+  "updatedAt": 1793729523086,
   "menu": {
     "items": [
       {
@@ -2308,7 +2308,11 @@
         "from": false,
         "frozen": false,
         "available": true,
-        "allergens": []
+        "allergens": [
+          1,
+          12,
+          14
+        ]
       }
     ]
   },
