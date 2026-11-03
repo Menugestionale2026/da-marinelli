@@ -797,10 +797,10 @@
 
   const DEFAULT_PIN = '1234';
   const DEFAULT_SETTINGS = {
-    phone: '+39 000 000 0000',
+    phone: '+39 331 717 7998',
     whatsapp: '',                 // solo cifre con prefisso internazionale, es. 393331234567
     email: '',
-    address: 'Indirizzo da inserire',
+    address: 'Piazza della Repubblica 21, Monfalcone (GO)',
     mapUrl: '',                   // facoltativo: link Google Maps
     hours: T('Orari da inserire nell’area riservata.', 'Opening hours to be added in the staff area.', 'Öffnungszeiten im Mitarbeiterbereich einzutragen.', 'Delovni čas vnesite v območju za zaposlene.'),
     coperto: 2.5,
