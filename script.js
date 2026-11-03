@@ -30,7 +30,8 @@
     lang: 'marinelli.lang.v1',
     updated: 'marinelli.updated.v1',     // quando è stata fatta l'ultima modifica in questo browser
     published: 'marinelli.published.v1', // ultima versione online vista da questo browser
-    gh: 'marinelli.gh.v1'                // token GitHub (solo sul dispositivo del titolare)
+    gh: 'marinelli.gh.v1',               // token GitHub sbloccato (solo su questo dispositivo)
+    keyfile: 'marinelli.keyfile.v1'      // ultima copia di admin-key.json vista
   };
   const MENU_VERSION = 2; // alza questo numero quando cambi i dati di partenza (SEED)
 
@@ -927,7 +928,20 @@
      =================================================================== */
   const PUBLISH = { repo: 'Menugestionale2026/da-marinelli', branch: 'main', file: 'data.json' };
 
-  const getToken = () => { const g = storage.get(KEYS.gh, null); return g && g.token ? String(g.token) : ''; };
+  // Il token vive in sessionStorage (solo questa visita) o, se "resta collegato", in localStorage
+  function getToken() {
+    try { const s = window.sessionStorage.getItem(KEYS.gh); if (s) return s; } catch (e) { /* ignora */ }
+    const g = storage.get(KEYS.gh, null);
+    return g && g.token ? String(g.token) : '';
+  }
+  const tokenRemembered = () => { const g = storage.get(KEYS.gh, null); return !!(g && g.token); };
+  function setToken(token, remember) {
+    try { window.sessionStorage.removeItem(KEYS.gh); } catch (e) { /* ignora */ }
+    storage.set(KEYS.gh, null);
+    if (!token) return;
+    if (remember) { storage.set(KEYS.gh, { token: token }); return; }
+    try { window.sessionStorage.setItem(KEYS.gh, token); } catch (e) { storage.set(KEYS.gh, { token: token }); }
+  }
   const localUpdated = () => Number(storage.get(KEYS.updated, 0)) || 0;
   const stamp = (p) => (p ? Number(p.updatedAt) || 0 : 0);
   const validPayload = (p) => !!(p && typeof p === 'object' && p.menu && Array.isArray(p.menu.items) && p.settings && typeof p.settings === 'object');
@@ -1016,11 +1030,11 @@
     }
   }
   function httpMessage(res) {
-    if (res.status === 401) return 'Il token non è valido o è scaduto: creane uno nuovo e ricollegalo.';
+    if (res.status === 401) return 'Il token non è valido o è scaduto: creane uno nuovo e incollalo in Impostazioni → Pubblicazione online.';
     if (res.status === 403 || res.status === 404) return 'Il token non ha il permesso di modificare il repository: serve «Contents: Read and write» su da-marinelli.';
     return 'GitHub ha risposto con un errore (' + res.status + ').';
   }
-  const filePath = () => '/contents/' + encodeURIComponent(PUBLISH.file);
+  const filePath = (name) => '/contents/' + encodeURIComponent(name || PUBLISH.file);
 
   async function pullRemote() {
     const res = await gh(filePath() + '?ref=' + encodeURIComponent(PUBLISH.branch));
@@ -1112,23 +1126,114 @@
     setPublishState('idle');
   }
 
-  async function connect(token) {
-    const prev = storage.get(KEYS.gh, null);
-    storage.set(KEYS.gh, { token: String(token || '').trim() });
+  /* ---------- accesso con password: il token sta nel repository, cifrato ---------- */
+  // admin-key.json contiene il token GitHub cifrato con la password dei proprietari
+  // (PBKDF2-SHA256 con 600.000 giri + AES-GCM). Senza la password non serve a nulla.
+  // I proprietari scrivono la password su qualsiasi dispositivo: il browser decifra il token e lo usa per pubblicare.
+  const KEYFILE = 'admin-key.json';
+  const KDF_ITER = 600000;
+  const cryptoOk = () => !!(window.crypto && window.crypto.subtle);
+  const bytesToB64 = (u8) => { let s = ''; u8.forEach((b) => { s += String.fromCharCode(b); }); return btoa(s); };
+  const b64ToBytes = (b64) => Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+  const validKeyFile = (k) => !!(k && k.v === 1 && k.salt && k.iv && k.ct && Number(k.iter) > 0);
+
+  async function deriveKey(password, salt, iter) {
+    const base = await window.crypto.subtle.importKey('raw', new TextEncoder().encode(String(password)), 'PBKDF2', false, ['deriveKey']);
+    return window.crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt: salt, iterations: iter, hash: 'SHA-256' },
+      base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+    );
+  }
+  async function encryptToken(token, password) {
+    const salt = window.crypto.getRandomValues(new Uint8Array(16));
+    const iv = window.crypto.getRandomValues(new Uint8Array(12));
+    const key = await deriveKey(password, salt, KDF_ITER);
+    const ct = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, new TextEncoder().encode(token));
+    return { v: 1, kdf: 'PBKDF2-SHA256', iter: KDF_ITER, salt: bytesToB64(salt), iv: bytesToB64(iv), ct: bytesToB64(new Uint8Array(ct)) };
+  }
+  async function decryptToken(blob, password) {
+    try {
+      const key = await deriveKey(password, b64ToBytes(blob.salt), Number(blob.iter));
+      const pt = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64ToBytes(blob.iv) }, key, b64ToBytes(blob.ct));
+      return new TextDecoder().decode(pt);
+    } catch (e) {
+      return null; // password sbagliata (il controllo AES-GCM fallisce) o file rovinato
+    }
+  }
+
+  // Il file con il token cifrato, come pubblicato sul sito (null = accesso con password non ancora attivato)
+  async function fetchKeyFile() {
+    try {
+      const r = await fetch(KEYFILE + '?t=' + Date.now(), { cache: 'no-store' });
+      if (r.ok) {
+        const k = await r.json();
+        if (validKeyFile(k)) { storage.set(KEYS.keyfile, k); return k; }
+        return null;
+      }
+      if (r.status === 404) { storage.set(KEYS.keyfile, null); return null; }
+    } catch (e) { /* offline: si usa l'ultima copia vista */ }
+    const c = storage.get(KEYS.keyfile, null);
+    return validKeyFile(c) ? c : null;
+  }
+
+  // Login: decifra il token con la password. remember = resta collegato su questo dispositivo.
+  async function unlock(password, remember) {
+    if (!cryptoOk()) return { ok: false, reason: 'crypto' };
+    const k = await fetchKeyFile();
+    if (!k) return { ok: false, reason: 'nokey' };
+    const token = await decryptToken(k, password);
+    if (!token) return { ok: false, reason: 'wrong' };
+    setToken(token, remember);
+    setPublishState('idle');
+    return { ok: true };
+  }
+
+  async function putKeyFile(blob) {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const cur = await gh(filePath(KEYFILE) + '?ref=' + encodeURIComponent(PUBLISH.branch));
+      let sha = null;
+      if (cur.ok) sha = (await cur.json()).sha;
+      else if (cur.status !== 404) throw new PublishError(httpMessage(cur));
+      const body = { message: 'Aggiornamento accesso area gestionale', content: b64enc(JSON.stringify(blob, null, 2) + '\n'), branch: PUBLISH.branch };
+      if (sha) body.sha = sha;
+      const res = await gh(filePath(KEYFILE), { method: 'PUT', body: JSON.stringify(body) });
+      if (res.status === 409 || res.status === 422) continue;
+      if (!res.ok) throw new PublishError(httpMessage(res));
+      storage.set(KEYS.keyfile, blob);
+      return;
+    }
+    throw new PublishError('Non sono riuscito a salvare la password: riprova tra poco.');
+  }
+
+  // Cambia la password usando il token già in uso su questo dispositivo
+  async function changePassword(password) {
+    if (!cryptoOk()) throw new PublishError('Questo browser non supporta la cifratura: usa un browser aggiornato.');
+    if (!getToken()) throw new PublishError('Non sei collegato a GitHub.');
+    await putKeyFile(await encryptToken(getToken(), password));
+  }
+
+  // Prima attivazione (o token sostituito): controlla il token, lo cifra con la password e lo salva nel repository
+  async function enablePasswordLogin(token, password, remember) {
+    if (!cryptoOk()) throw new PublishError('Questo browser non supporta la cifratura: usa un browser aggiornato.');
+    const prev = getToken(), prevRemember = tokenRemembered();
+    setToken(String(token || '').trim(), remember);
     try {
       const res = await gh('');
       if (!res.ok) throw new PublishError(httpMessage(res));
       await pullRemote(); // controlla anche che il token possa leggere data.json
+      await putKeyFile(await encryptToken(getToken(), password)); // e scrivere nel repository
     } catch (e) {
-      storage.set(KEYS.gh, prev);
+      setToken(prev, prevRemember);
       setPublishState(getToken() ? 'idle' : 'local');
       throw e;
     }
     return syncFromRemote();
   }
+
+  // Esci da questo dispositivo: dimentica il token
   function disconnect() {
     clearTimeout(publishTimer);
-    storage.set(KEYS.gh, null);
+    setToken('', false);
     setPublishState('local');
   }
 
@@ -1147,7 +1252,8 @@
     getSettings, saveSettings,
     checkPin, setPin, isDefaultPin,
     getLang, setStoredLang, normalizeItem,
-    PUBLISH, getToken, connect, disconnect, publishNow, schedulePublish, syncFromRemote, useRemote,
+    PUBLISH, getToken, tokenRemembered, fetchKeyFile, unlock, enablePasswordLogin, changePassword, cryptoOk,
+    disconnect, publishNow, schedulePublish, syncFromRemote, useRemote,
     getPublishState: () => publishState, onPublishState, unpublished, buildPayload, resolveData, fetchPublished, cachedPayload,
     storage
   };

@@ -17,8 +17,9 @@
   pubblica menù e impostazioni nel file data.json del repository: è quello che legge il menù dei clienti.
   Le prenotazioni restano solo in questo browser.
   PIN predefinito: 1234  (cambialo subito da Impostazioni).
-  Il PIN è controllato nel browser: serve solo a tenere lontani i curiosi. La vera chiave
-  per modificare il sito è il token GitHub, che sta solo sul dispositivo del titolare.
+  Accesso: prima dell'attivazione c'è un PIN controllato nel browser (tiene lontani i curiosi, nulla di più).
+  Una volta attivata la pubblicazione, l'accesso è con una password: il token GitHub sta nel repository
+  (admin-key.json) cifrato con quella password, e si sblocca solo digitandola.
 -->
 <body data-page="admin">
 
@@ -31,11 +32,12 @@
         <circle cx="16" cy="16" r="3.4" fill="currentColor"/>
       </svg>
       <h1>Area gestionale</h1>
-      <p>Inserisci il PIN per continuare.</p>
+      <p id="login-hint">Inserisci il PIN per continuare.</p>
       <div class="field">
-        <label class="visually-hidden" for="pin">PIN</label>
+        <label class="visually-hidden" for="pin" id="pin-label">PIN</label>
         <input class="input" id="pin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="12" placeholder="••••" autofocus>
       </div>
+      <label class="check" id="login-remember" hidden style="margin-top:10px"><input type="checkbox" id="remember" checked> Resta collegato su questo dispositivo</label>
       <p class="form-error" id="login-err" role="alert" hidden></p>
       <button class="btn btn--primary btn--block" type="submit" style="margin-top:14px">Entra</button>
       <a class="back" href="index.html">Torna al menù</a>
@@ -155,30 +157,32 @@
         <div class="card" id="pub-card">
           <h3>Pubblicazione online</h3>
           <p id="pub-status"></p>
-          <div id="pub-connect">
-            <div class="field">
-              <label for="gh-token">Token GitHub</label>
-              <input class="input" id="gh-token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
-            </div>
-            <p class="form-error" id="gh-err" role="alert" hidden></p>
-            <div class="card-actions"><button class="btn btn--primary" type="button" id="gh-connect">Collega</button></div>
-            <details class="how">
-              <summary>Come creo il token (si fa una volta sola)</summary>
-              <ol>
-                <li>Apri <a href="https://github.com/settings/personal-access-tokens/new?name=Da+Marinelli+menu&amp;description=Pubblica+il+menu+dall%27area+gestionale&amp;target_name=Menugestionale2026&amp;expires_in=365&amp;contents=write" target="_blank" rel="noopener">Crea token su GitHub</a> (accedi con l’account del locale). Nome e permessi sono già compilati.</li>
-                <li>In «Repository access» scegli <b>Only select repositories</b> e seleziona <b>da-marinelli</b>.</li>
-                <li>Premi <b>Generate token</b>, copia il codice che inizia con <code>github_pat_</code> e incollalo qui sopra.</li>
-              </ol>
-              <p class="hint">Il token resta solo su questo dispositivo e permette di modificare soltanto quel repository. Se lo perdi o scade, ne crei un altro.</p>
-            </details>
-          </div>
           <div id="pub-connected" hidden>
             <div class="card-actions">
               <button class="btn btn--primary" type="button" id="pub-now">Pubblica ora</button>
               <button class="btn btn--outline" type="button" id="pub-pull">Ricarica da online</button>
-              <button class="btn btn--outline" type="button" id="gh-disconnect">Scollega</button>
+              <button class="btn btn--outline" type="button" id="gh-disconnect">Esci da questo dispositivo</button>
             </div>
           </div>
+          <details class="how" id="pub-setup">
+            <summary id="pub-setup-sum">Attiva la pubblicazione online</summary>
+            <form id="pub-form" novalidate>
+              <div class="form-grid" style="margin-top:12px">
+                <div class="field span-2"><label for="gh-token" id="gh-token-label">Token GitHub</label><input class="input" id="gh-token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…"></div>
+                <div class="field"><label for="gh-pass">Password dell’area gestionale</label><input class="input" id="gh-pass" type="password" autocomplete="new-password"></div>
+                <div class="field"><label for="gh-pass2">Ripeti la password</label><input class="input" id="gh-pass2" type="password" autocomplete="new-password"></div>
+              </div>
+              <p class="hint">Almeno 10 caratteri e non solo numeri: meglio una frase facile da ricordare. È l’unica cosa che i proprietari devono sapere e sostituisce il PIN. Il token viene salvato cifrato con questa password: senza password non si può usare.</p>
+              <p class="form-error" id="gh-err" role="alert" hidden></p>
+              <div class="card-actions"><button class="btn btn--primary" type="submit" id="gh-save">Attiva</button></div>
+              <p class="hint" style="margin-top:16px"><b>Come creo il token (una volta sola):</b></p>
+              <ol class="steps">
+                <li>Apri <a href="https://github.com/settings/personal-access-tokens/new?name=Da+Marinelli+menu&amp;description=Pubblica+il+menu+dall%27area+gestionale&amp;target_name=Menugestionale2026&amp;expires_in=365&amp;contents=write" target="_blank" rel="noopener">Crea token su GitHub</a> (accedi con l’account del locale). Nome e permessi sono già compilati.</li>
+                <li>In «Repository access» scegli <b>Only select repositories</b> e seleziona <b>da-marinelli</b>.</li>
+                <li>Premi <b>Generate token</b>, copia il codice che inizia con <code>github_pat_</code> e incollalo qui sopra.</li>
+              </ol>
+            </form>
+          </details>
         </div>
 
         <form class="card" id="pin-form" novalidate>
@@ -384,22 +388,59 @@
     /* =================================================================
        ACCESSO CON PIN
        ================================================================= */
-    const isAuthed = () => { try { return sessionStorage.getItem(AUTH_KEY) === '1'; } catch (e) { return false; } };
+    // Autenticato = token sbloccato su questo dispositivo, oppure (prima di attivare la password) PIN inserito in questa sessione
+    const isAuthed = () => !!C.getToken() || (function () { try { return sessionStorage.getItem(AUTH_KEY) === '1'; } catch (e) { return false; } })();
     let fails = 0, lockUntil = 0;
+    let keyMode = false; // true = l'accesso è con la password (c'è admin-key.json online)
 
-    $('#login-form').addEventListener('submit', (e) => {
+    function setLoginMode(k) {
+      keyMode = !!k;
+      $('#login-hint').textContent = keyMode ? 'Inserisci la password per continuare.' : 'Inserisci il PIN per continuare.';
+      $('#pin-label').textContent = keyMode ? 'Password' : 'PIN';
+      const inp = $('#pin');
+      inp.maxLength = keyMode ? 128 : 12;
+      inp.setAttribute('inputmode', keyMode ? 'text' : 'numeric');
+      inp.placeholder = keyMode ? 'Password' : '••••';
+      $('#login-remember').hidden = !keyMode;
+    }
+    function showLogin() {
+      $('#app-view').hidden = true;
+      $('#login-view').hidden = false;
+      $('#pin').value = '';
+      C.fetchKeyFile().then(setLoginMode);
+      $('#pin').focus();
+    }
+
+    $('#login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const now = Date.now();
       if (now < lockUntil) return showErr('#login-err', 'Troppi tentativi. Riprova tra ' + Math.ceil((lockUntil - now) / 1000) + ' secondi.');
-      if (C.checkPin($('#pin').value)) {
+      const btn = $('#login-form button[type="submit"]');
+      btn.disabled = true;
+      let ok = false, msg = 'PIN errato.';
+      try {
+        const k = await C.fetchKeyFile();
+        setLoginMode(k);
+        if (k) {
+          const r = await C.unlock($('#pin').value, $('#remember').checked);
+          ok = r.ok;
+          msg = r.reason === 'crypto' ? 'Questo browser non supporta l’accesso con password: aggiornalo.' : 'Password errata.';
+        } else {
+          ok = C.checkPin($('#pin').value);
+        }
+      } finally {
+        btn.disabled = false;
+      }
+      if (ok) {
         try { sessionStorage.setItem(AUTH_KEY, '1'); } catch (err) { /* ignora */ }
         fails = 0;
         $('#login-err').hidden = true;
-        showApp();
+        $('#pin').value = '';
+        enter();
       } else {
         fails++;
-        if (fails >= 5) { lockUntil = now + 30000; fails = 0; showErr('#login-err', 'Troppi tentativi. Riprova tra 30 secondi.'); }
-        else showErr('#login-err', 'PIN errato.');
+        if (fails >= 5) { lockUntil = Date.now() + 30000; fails = 0; showErr('#login-err', 'Troppi tentativi. Riprova tra 30 secondi.'); }
+        else showErr('#login-err', msg);
         $('#pin').value = '';
         $('#pin').focus();
       }
@@ -407,11 +448,16 @@
 
     $('#logout').addEventListener('click', () => {
       try { sessionStorage.removeItem(AUTH_KEY); } catch (e) { /* ignora */ }
-      $('#app-view').hidden = true;
-      $('#login-view').hidden = false;
-      $('#pin').value = '';
-      $('#pin').focus();
+      C.disconnect(); // il token non resta su questo dispositivo
+      showLogin();
     });
+
+    // Se nel frattempo è stata attivata la password e qui manca il token, si torna al login
+    async function enter() {
+      const k = await C.fetchKeyFile();
+      if (k && !C.getToken()) { try { sessionStorage.removeItem(AUTH_KEY); } catch (e) { /* ignora */ } return showLogin(); }
+      showApp();
+    }
 
     function showApp() {
       $('#login-view').hidden = true;
@@ -443,7 +489,7 @@
       const btn = (act, label) => '<button class="btn btn--sm btn--outline" type="button" data-pub="' + act + '">' + label + '</button>';
       switch (ps.kind) {
         case 'local':
-          return '<div class="notice notice--warn"><span>Non sei collegato a GitHub: le modifiche restano solo su questo browser e i clienti non le vedono.</span><button class="btn btn--sm btn--outline" type="button" data-goto="settings">Collega</button></div>';
+          return '<div class="notice notice--warn"><span>La pubblicazione online non è attiva: le modifiche restano solo su questo browser e i clienti non le vedono.</span><button class="btn btn--sm btn--outline" type="button" data-goto="settings">Attiva</button></div>';
         case 'pending':
           return '<div class="notice notice--info"><span>Modifiche da pubblicare…</span></div>';
         case 'saving':
@@ -465,8 +511,8 @@
     function renderNotices() {
       const s = C.getSettings();
       const out = [];
-      if (C.isDefaultPin()) {
-        out.push('<div class="notice notice--warn"><span>Stai usando il PIN predefinito (1234). Cambialo ora.</span><button class="btn btn--sm btn--outline" type="button" data-goto="settings">Cambia PIN</button></div>');
+      if (!C.getToken() && C.isDefaultPin()) {
+        out.push('<div class="notice notice--warn"><span>Stai usando il PIN predefinito (1234). Attiva la pubblicazione online per sostituirlo con una password.</span><button class="btn btn--sm btn--outline" type="button" data-goto="settings">Cambia PIN</button></div>');
       }
       if (!s.phone || !s.address) {
         out.push('<div class="notice notice--warn"><span>Mancano telefono o indirizzo: completali nelle Impostazioni.</span><button class="btn btn--sm btn--outline" type="button" data-goto="settings">Completa</button></div>');
@@ -494,11 +540,15 @@
     /* ---------- pubblicazione online (scheda Impostazioni) ---------- */
     function renderPubCard() {
       const on = !!C.getToken();
-      $('#pub-connect').hidden = on;
       $('#pub-connected').hidden = !on;
+      $('#pub-setup-sum').textContent = on ? 'Cambia la password o sostituisci il token' : 'Attiva la pubblicazione online';
+      $('#gh-token-label').textContent = on ? 'Nuovo token (solo se quello attuale è scaduto)' : 'Token GitHub';
+      $('#gh-save').textContent = on ? 'Salva' : 'Attiva';
+      if (!on) $('#pub-setup').open = true;
+      $('#pin-form').hidden = on; // il PIN vale solo finché non si attiva la password
       $('#pub-status').textContent = on
-        ? 'Collegato a GitHub (' + C.PUBLISH.repo + '). Ogni modifica a piatti, prezzi, orari e contatti viene pubblicata in automatico.'
-        : 'Non collegato: finché non incolli il token, le modifiche restano solo in questo browser e i clienti non le vedono.';
+        ? 'Attiva. Ogni modifica a piatti, prezzi, orari e contatti viene pubblicata in automatico, da qualsiasi dispositivo si entri con la password.'
+        : 'Non ancora attiva: finché non la attivi, le modifiche restano solo in questo browser e i clienti non le vedono.';
     }
     function refreshAll() {
       renderNotices();
@@ -509,21 +559,36 @@
     C.onPublishState(() => { renderNotices(); renderPubCard(); });
     window.addEventListener('online', () => { if (C.getPublishState().kind === 'error' && C.getToken()) C.publishNow(); });
 
-    $('#gh-connect').addEventListener('click', async () => {
-      const tok = $('#gh-token').value.trim();
-      if (!tok) return showErr('#gh-err', 'Incolla qui il token che hai copiato da GitHub.');
-      const btn = $('#gh-connect');
-      btn.disabled = true; btn.textContent = 'Collego…';
+    function passwordProblem(p1, p2) {
+      if (!p1) return 'Scrivi la password.';
+      if (p1.length < 10) return 'La password deve avere almeno 10 caratteri.';
+      if (/^\d+$/.test(p1)) return 'La password non può essere fatta solo di numeri.';
+      if (p1 !== p2) return 'Le due password non coincidono.';
+      return '';
+    }
+
+    $('#pub-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const on = !!C.getToken();
+      const tok = $('#gh-token').value.trim(), p1 = $('#gh-pass').value, p2 = $('#gh-pass2').value;
+      if (!on && !tok) return showErr('#gh-err', 'Incolla il token che hai copiato da GitHub.');
+      const problem = passwordProblem(p1, p2);
+      if (problem) return showErr('#gh-err', problem);
+      const btn = $('#gh-save'), label = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Un momento…';
       try {
-        const r = await C.connect(tok);
-        $('#gh-token').value = '';
+        if (tok) await C.enablePasswordLogin(tok, p1, on ? C.tokenRemembered() : true);
+        else await C.changePassword(p1);
+        try { sessionStorage.setItem(AUTH_KEY, '1'); } catch (err) { /* ignora */ }
+        ['#gh-token', '#gh-pass', '#gh-pass2'].forEach((s) => { $(s).value = ''; });
         $('#gh-err').hidden = true;
+        $('#pub-setup').open = false;
         refreshAll();
-        toast(r === 'adopted' ? 'Collegato: caricati i dati online' : 'Collegato a GitHub');
+        toast(on ? 'Salvato' : 'Attivato: da ora la password sostituisce il PIN');
       } catch (err) {
-        showErr('#gh-err', err.message || 'Collegamento non riuscito.');
+        showErr('#gh-err', err.message || 'Operazione non riuscita.');
       } finally {
-        btn.disabled = false; btn.textContent = 'Collega';
+        btn.disabled = false; btn.textContent = label;
       }
     });
     $('#pub-now').addEventListener('click', () => C.publishNow());
@@ -531,12 +596,7 @@
       if (C.unpublished() && !(await confirmBox('Ci sono modifiche non ancora pubblicate: caricando i dati online andranno perse. Continuare?', 'Ricarica', true))) return;
       try { await C.useRemote(); refreshAll(); toast('Dati online caricati'); } catch (err) { toast(err.message || 'Non riesco a leggere i dati online.', true); }
     });
-    $('#gh-disconnect').addEventListener('click', async () => {
-      if (!(await confirmBox('Scollegare GitHub da questo dispositivo? Le modifiche non verranno più pubblicate finché non incolli di nuovo un token.', 'Scollega', true))) return;
-      C.disconnect();
-      refreshAll();
-      toast('Scollegato');
-    });
+    $('#gh-disconnect').addEventListener('click', () => $('#logout').click());
 
     /* =================================================================
        PRENOTAZIONI
@@ -1025,8 +1085,8 @@
     });
 
     /* ---------- avvio ---------- */
-    if (isAuthed()) showApp();
-    else $('#pin').focus();
+    if (isAuthed()) enter();
+    else showLogin();
   })();
   </script>
 </body>
