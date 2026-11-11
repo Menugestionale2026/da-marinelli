@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": 1794356129231,
+  "updatedAt": 1794356282551,
   "menu": {
     "items": [
       {
@@ -2344,6 +2344,37 @@
           4,
           5
         ]
+      },
+      {
+        "id": "mwbdegmuw11md",
+        "cat": "birre",
+        "name": {
+          "it": "Birra Rosso Poretti",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "desc": {
+          "it": "",
+          "en": "",
+          "de": "",
+          "sl": ""
+        },
+        "prices": [
+          {
+            "label": {
+              "it": "3,50",
+              "en": "",
+              "de": "",
+              "sl": ""
+            },
+            "value": 3.5
+          }
+        ],
+        "from": false,
+        "frozen": false,
+        "available": true,
+        "allergens": []
       }
     ]
   },
