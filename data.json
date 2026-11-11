@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": 1793729688668,
+  "updatedAt": 1794356129231,
   "menu": {
     "items": [
       {
@@ -613,7 +613,7 @@
         "id": "pz-altroadige",
         "cat": "speciali",
         "name": {
-          "it": "Altro Adige",
+          "it": "Alto Adige",
           "en": "Altro Adige",
           "de": "Altro Adige",
           "sl": "Altro Adige"
