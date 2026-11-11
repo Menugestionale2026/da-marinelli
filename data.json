@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updatedAt": 1794356292135,
+  "updatedAt": 1794356313996,
   "menu": {
     "items": [
       {
@@ -2349,7 +2349,7 @@
         "id": "mwbdegmuw11md",
         "cat": "birre",
         "name": {
-          "it": "Birra Rosso Poretti",
+          "it": "Birra Rossa Poretti",
           "en": "",
           "de": "",
           "sl": ""
@@ -2368,7 +2368,7 @@
               "de": "",
               "sl": ""
             },
-            "value": 3.5
+            "value": 6
           }
         ],
         "from": false,
